@@ -56,6 +56,8 @@ This contains a combination of the `Metadata` and `Enumerable` functionality.
 
 ### Extensions
 
+Each top level contract implementation is an Extendable contract extended with numerous extensions that now house the token logic. The functions are separated into extensions that are extended by the main contract during deployment.
+
 #### ERC721
 
 `ApproveLogic.sol` - contains all state-mutating functions involving token approvals.
