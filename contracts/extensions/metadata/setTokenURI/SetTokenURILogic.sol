@@ -11,7 +11,9 @@ contract SetTokenURILogic is ISetTokenURILogic, InternalExtension {
      */
     function _setTokenURI(uint256 tokenId, string memory _tokenURI) public _internal virtual {
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
-        _tokenURIs[tokenId] = _tokenURI;
+
+        TokenURIState storage state = TokenURIStorage._getStorage();
+        state._tokenURIs[tokenId] = _tokenURI;
     }
 
     function getInterfaceId() override virtual public pure returns(bytes4) {

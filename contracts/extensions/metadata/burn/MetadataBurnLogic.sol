@@ -28,7 +28,7 @@ contract MetadataBurnLogic is IMetadataBurnLogic, BurnLogic {
     }
 
     function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IBasicBurnLogic).interfaceId);
+        return(type(IMetadataBurnLogic).interfaceId);
     }
 
     function getInterface() override virtual public pure returns(string memory) {

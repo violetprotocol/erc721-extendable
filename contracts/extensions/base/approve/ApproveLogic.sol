@@ -1,14 +1,8 @@
 //SPDX-License-Identifier: LGPL-3.0
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
-import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
-import { TokenURIState, TokenURIStorage } from "../../../storage/TokenURIStorage.sol";
 import "./IApproveLogic.sol";
 import "./IApproveInternalLogic.sol";
 import "../getter/IGetterLogic.sol";
@@ -17,9 +11,6 @@ import "../getter/IGetterLogic.sol";
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 // To follow Extension principles, maybe best to separate each function into a different Extension
 contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension {
-    using Address for address;
-    using Strings for uint256;
-
     /**
      * @dev See {IERC721-approve}.
      */
@@ -33,6 +24,29 @@ contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension
         );
 
         _approve(to, tokenId);
+    }
+
+    /**
+     * @dev See {IERC721-setApprovalForAll}.
+     */
+    function setApprovalForAll(address operator, bool approved) public virtual override {
+        _setApprovalForAll(msg.sender, operator, approved);
+    }
+
+    /**
+     * @dev Approve `operator` to operate on all of `owner` tokens
+     *
+     * Emits a {ApprovalForAll} event.
+     */
+    function _setApprovalForAll(
+        address owner,
+        address operator,
+        bool approved
+    ) internal virtual {
+        require(owner != operator, "ERC721: approve to caller");
+        ERC721State storage erc721Storage = ERC721Storage._getStorage();
+        erc721Storage._operatorApprovals[owner][operator] = approved;
+        emit ApprovalForAll(owner, operator, approved);
     }
 
     /**
@@ -51,6 +65,7 @@ contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension
     }
 
     function getInterface() override virtual public pure returns(string memory) {
-        return "function approve(address to, uint256 tokenId) external;\n";
+        return  "function approve(address to, uint256 tokenId) external;\n"
+                "function setApprovalForAll(address operator, bool approved) external;\n";
     }
 }

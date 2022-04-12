@@ -4,7 +4,6 @@ pragma solidity ^0.8.4;
 import "hardhat/console.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
-import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
 import "./IMetadataGetterLogic.sol";
 import "../../base/getter/IGetterLogic.sol";
@@ -40,7 +39,9 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
         // See {IERC721URIStorage-tokenURI}
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI query for nonexistent token");
 
-        string memory _tokenURI = _tokenURIs[tokenId];
+        TokenURIState storage state = TokenURIStorage._getStorage();
+
+        string memory _tokenURI = state._tokenURIs[tokenId];
         string memory base = _baseURI();
 
         // If there is no base URI, return the token URI.
