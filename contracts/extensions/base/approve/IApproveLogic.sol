@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: LGPL-3.0
+//SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 interface IApproveLogic {
@@ -16,7 +16,7 @@ interface IApproveLogic {
      * @dev See {IERC721-setApprovalForAll}.
      */
     function setApprovalForAll(address operator, bool approved) external;
-    
+
     /**
      * @dev See {IERC721-approve}.
      */
