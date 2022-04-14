@@ -5,7 +5,7 @@ import "hardhat/console.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
-import "../receiver/IOnReceive.sol";
+import "../receiver/IOnReceiveLogic.sol";
 import "../hooks/IBeforeTransferLogic.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -41,7 +41,7 @@ abstract contract MintLogic is Extension {
     ) internal virtual {
         _mint(to, tokenId);
         require(
-            IOnReceive(address(this))._checkOnERC721Received(address(0), to, tokenId, _data),
+            IOnReceiveLogic(address(this))._checkOnERC721Received(address(0), to, tokenId, _data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
     }

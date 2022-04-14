@@ -5,12 +5,15 @@ import "hardhat/console.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./IMetadataGetterLogic.sol";
 import "../../base/getter/IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
+    using Strings for uint256;
+    
     /**
      * @dev See {IERC721Metadata-name}.
      */
@@ -56,6 +59,15 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
         // See {ERC721-tokenURI}
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
+    }
+    
+    /**
+     * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
+     * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
+     * by default, can be overriden in child contracts.
+     */
+    function _baseURI() internal view virtual returns (string memory) {
+        return "";
     }
 
 

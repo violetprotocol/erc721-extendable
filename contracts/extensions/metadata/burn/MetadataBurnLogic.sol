@@ -3,6 +3,7 @@ pragma solidity ^0.8.4;
 
 import "./IMetadataBurnLogic.sol";
 import "../../base/burn/BurnLogic.sol";
+import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Metadata.sol
@@ -22,8 +23,9 @@ contract MetadataBurnLogic is IMetadataBurnLogic, BurnLogic {
     function burn(uint256 tokenId) override public {
         _burn(tokenId);
 
-        if (bytes(_tokenURIs[tokenId]).length != 0) {
-            delete _tokenURIs[tokenId];
+        TokenURIState storage state = TokenURIStorage._getStorage();
+        if (bytes(state._tokenURIs[tokenId]).length != 0) {
+            delete state._tokenURIs[tokenId];
         }
     }
 

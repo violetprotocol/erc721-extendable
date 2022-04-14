@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
+import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
 import "./ISetTokenURILogic.sol";
 import "../../base/getter/IGetterLogic.sol";
 
@@ -9,7 +10,7 @@ contract SetTokenURILogic is ISetTokenURILogic, InternalExtension {
     /**
      * @dev See {ISetTokenURILogic-_setTokenURI}.
      */
-    function _setTokenURI(uint256 tokenId, string memory _tokenURI) public _internal virtual {
+    function _setTokenURI(uint256 tokenId, string memory _tokenURI) override public _internal virtual {
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
 
         TokenURIState storage state = TokenURIStorage._getStorage();

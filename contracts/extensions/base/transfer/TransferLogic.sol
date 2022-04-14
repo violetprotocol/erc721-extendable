@@ -83,7 +83,7 @@ contract TransferLogic is ITransferLogic, Extension {
         bytes memory _data
     ) internal virtual {
         _transfer(from, to, tokenId);
-        require(IOnReceive(address(this))._checkOnERC721Received(address(0), to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
+        require(IOnReceiveLogic(address(this))._checkOnERC721Received(address(0), to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
     }
 
     /**
