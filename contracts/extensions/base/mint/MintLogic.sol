@@ -7,15 +7,13 @@ import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
 import "../hooks/IBeforeTransferLogic.sol";
+import "../Events.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 
 // This contract should be inherited by your own custom `mint` logic which makes a call to `_mint` or `_safeMint`
-abstract contract MintLogic is Extension {
-    // Problem is non-reusable event definitions
-    event Transfer(address from, address to, uint256 tokenId);
-
+abstract contract MintLogic is Extension, Events {
     /**
      * @dev Safely mints `tokenId` and transfers it to `to`.
      *

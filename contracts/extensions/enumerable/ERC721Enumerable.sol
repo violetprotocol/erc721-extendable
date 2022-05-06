@@ -15,6 +15,7 @@ contract ERC721Enumerable is ERC721 {
         address beforeTransferLogic,
         address enumerableGetterLogic) 
     ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {
-        IExtendLogic(address(this)).extend(enumerableGetterLogic);
+        (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", enumerableGetterLogic));
+        require(extendGetterSuccess, "failed to initialise enumerable getter");
     }
 }

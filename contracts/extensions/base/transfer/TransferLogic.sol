@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
@@ -13,10 +12,11 @@ import "../receiver/IOnReceiveLogic.sol";
 import "../approve/IApproveInternalLogic.sol";
 import "../hooks/IBeforeTransferLogic.sol";
 import "./ITransferLogic.sol";
+import "../Events.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
-contract TransferLogic is ITransferLogic, Extension {
+contract TransferLogic is ITransferLogic, Extension, Events {
     using Address for address;
     using Strings for uint256;
 
@@ -115,14 +115,16 @@ contract TransferLogic is ITransferLogic, Extension {
         erc721Storage._balances[to] += 1;
         erc721Storage._owners[tokenId] = to;
 
-        emit Transfer(from, to, tokenId);
+        emit Events.Transfer(from, to, tokenId);
     }
 
     function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IERC721).interfaceId ^ type(IERC721Metadata).interfaceId);
+        return(type(ITransferLogic).interfaceId);
     }
 
     function getInterface() override virtual public pure returns(string memory) {
-        return "function extend(address extension) external;function getCurrentInterface() external returns(string memory);function getExtensions() external returns(address[] memory);";
+        return  "function transferFrom(address from, address to, uint256 tokenId) external;\n"
+                "function safeTransferFrom(address from, address to, uint256 tokenId) external;\n"
+                "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) external;\n";
     }
 }

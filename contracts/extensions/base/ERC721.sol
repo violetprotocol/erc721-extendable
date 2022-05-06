@@ -21,10 +21,21 @@ contract ERC721 is Extendable {
         erc721Storage._name = name_;
         erc721Storage._symbol = symbol_;
 
-        IExtendLogic(address(this)).extend(approveLogic);
-        IExtendLogic(address(this)).extend(getterLogic);
-        IExtendLogic(address(this)).extend(onReceiveLogic);
-        IExtendLogic(address(this)).extend(transferLogic);
-        IExtendLogic(address(this)).extend(beforeTransferLogic);
+
+        (bool extendApproveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", approveLogic));
+        require(extendApproveSuccess, "failed to initialise approve");
+
+        (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", getterLogic));
+        require(extendGetterSuccess, "failed to initialise getter");
+        
+        (bool extendOnReceiveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", onReceiveLogic));
+        require(extendOnReceiveSuccess, "failed to initialise onReceive");
+
+        (bool extendTransferSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", transferLogic));
+        require(extendTransferSuccess, "failed to initialise transfer");
+
+        (bool extendBeforeTransferSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", beforeTransferLogic));
+        require(extendBeforeTransferSuccess, "failed to initialise beforeTransfer");
+
     }
 }
