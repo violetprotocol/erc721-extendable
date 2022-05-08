@@ -2,6 +2,7 @@
 
 pragma solidity ^0.8.4;
 
+import "hardhat/console.sol";
 import "../extensions/base/ERC721.sol";
 import "../extensions/base/getter/IGetterLogic.sol";
 import "../extensions/base/mint/MintLogic.sol";
@@ -25,7 +26,7 @@ contract ERC721MockExtension is MintLogic, BurnLogic {
         return "";
     }
 
-    function exists(uint256 tokenId) public view returns (bool) {
+    function exists(uint256 tokenId) public returns (bool) {
         return IGetterLogic(address(this))._exists(tokenId);
     }
 

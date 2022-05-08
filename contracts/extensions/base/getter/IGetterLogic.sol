@@ -5,22 +5,22 @@ interface IGetterLogic {
     /**
      * @dev See {IERC721-balanceOf}.
      */
-    function balanceOf(address owner) external view returns (uint256);
+    function balanceOf(address owner) external returns (uint256);
 
     /**
      * @dev See {IERC721-ownerOf}.
      */
-    function ownerOf(uint256 tokenId) external view returns (address);
+    function ownerOf(uint256 tokenId) external returns (address);
 
     /**
      * @dev See {IERC721-getApproved}.
      */
-    function getApproved(uint256 tokenId) external view returns (address);
+    function getApproved(uint256 tokenId) external returns (address);
 
     /**
      * @dev See {IERC721-isApprovedForAll}.
      */
-    function isApprovedForAll(address owner, address operator) external view returns (bool);
+    function isApprovedForAll(address owner, address operator) external returns (bool);
     
     /**
      * @dev Returns whether `tokenId` exists.
@@ -34,7 +34,7 @@ interface IGetterLogic {
      *
      * - Must be modified with `public _internal`.
      */
-    function _exists(uint256 tokenId) external view returns (bool);
+    function _exists(uint256 tokenId) external returns (bool);
 
     /**
      * @dev Returns whether `spender` is allowed to manage `tokenId`.
@@ -44,5 +44,5 @@ interface IGetterLogic {
      * - `tokenId` must exist.
      * - Must be modified with `public _internal`.
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool);
+    function _isApprovedOrOwner(address spender, uint256 tokenId) external returns (bool);
 }

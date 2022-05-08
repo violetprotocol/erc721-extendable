@@ -9,8 +9,7 @@ chai.use(solidity);
 const { expect } = chai;
 const { BigNumber } = ethers;
 
-before("setup", async function () {
-    this.signers = {} as Signers;
+before("setup", async function () {this.signers = {} as Signers;
     
     const signers: SignerWithAddress[] = await ethers.getSigners();
     this.signers.admin = signers[0];
@@ -37,7 +36,7 @@ before("setup", async function () {
     const mintArtifact = await artifacts.readArtifact("BasicMintLogic");
     const onReceiveArtifact = await artifacts.readArtifact("OnReceiveLogic");
     const transferArtifact = await artifacts.readArtifact("TransferLogic");
-    
+
     const enumerableGetterArtifact = await artifacts.readArtifact("EnumerableGetterLogic");
     const enumerableBeforeTransferArtifact = await artifacts.readArtifact("EnumerableBeforeTransferLogic");
     const metadataBurnArtifact = await artifacts.readArtifact("MetadataBurnLogic");

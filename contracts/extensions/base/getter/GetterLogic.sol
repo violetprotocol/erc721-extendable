@@ -19,7 +19,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-balanceOf}.
      */
-    function balanceOf(address owner) public view virtual override returns (uint256) {
+    function balanceOf(address owner) public virtual override returns (uint256) {
         require(owner != address(0), "ERC721: balance query for the zero address");
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
         return erc721Storage._balances[owner];
@@ -28,7 +28,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-ownerOf}.
      */
-    function ownerOf(uint256 tokenId) public view virtual override returns (address) {
+    function ownerOf(uint256 tokenId) public virtual override returns (address) {
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
         address owner = erc721Storage._owners[tokenId];
         require(owner != address(0), "ERC721: owner query for nonexistent token");
@@ -38,7 +38,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-getApproved}.
      */
-    function getApproved(uint256 tokenId) public view virtual override returns (address) {
+    function getApproved(uint256 tokenId) public virtual override returns (address) {
         require(_exists(tokenId), "ERC721: approved query for nonexistent token");
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
 
@@ -56,7 +56,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IGetterLogic-_exists}.
      */
-    function _exists(uint256 tokenId) override public _internal view returns (bool) {
+    function _exists(uint256 tokenId) override public _internal returns (bool) {
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
         return erc721Storage._owners[tokenId] != address(0);
     }
@@ -64,7 +64,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IGetterLogic-_isApprovedOrOwner}.
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal view virtual returns (bool) {
+    function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal virtual returns (bool) {
         require(_exists(tokenId), "ERC721: operator query for nonexistent token");
         address owner = ownerOf(tokenId);
         RoleState storage roles = Permissions._getStorage();

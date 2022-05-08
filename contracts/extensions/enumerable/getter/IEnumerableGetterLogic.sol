@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
@@ -16,15 +15,15 @@ interface IEnumerableGetterLogic {
     /**
      * @dev See {IERC721Enumerable-tokenOfOwnerByIndex}.
      */
-    function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256);
+    function tokenOfOwnerByIndex(address owner, uint256 index) external returns (uint256);
 
     /**
      * @dev See {IERC721Enumerable-totalSupply}.
      */
-    function totalSupply() external view returns (uint256);
+    function totalSupply() external returns (uint256);
 
     /**
      * @dev See {IERC721Enumerable-tokenByIndex}.
      */
-    function tokenByIndex(uint256 index) external view returns (uint256);
+    function tokenByIndex(uint256 index) external returns (uint256);
 }

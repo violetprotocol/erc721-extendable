@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
@@ -17,7 +16,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
     /**
      * @dev See {IERC721Metadata-name}.
      */
-    function name() override public view virtual returns (string memory) {
+    function name() override public virtual returns (string memory) {
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
         return erc721Storage._name;
     }
@@ -25,7 +24,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
     /**
      * @dev See {IERC721Metadata-symbol}.
      */
-    function symbol() override public view virtual returns (string memory) {
+    function symbol() override public virtual returns (string memory) {
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
         return erc721Storage._symbol;
     }
@@ -38,7 +37,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
      * Original OpenZeppelin implementation breaks its own rules around extensions and implementations
      * so this implementation will not follow that and fixes that here.
      */
-    function tokenURI(uint256 tokenId) override public view virtual returns (string memory) {
+    function tokenURI(uint256 tokenId) override public virtual returns (string memory) {
         // See {IERC721URIStorage-tokenURI}
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI query for nonexistent token");
 
