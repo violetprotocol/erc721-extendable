@@ -88,25 +88,23 @@ const shouldBehaveLikeERC721 = () => {
           });
         });
     
-        // describe('ownerOf', function () {
-        //   context('when the given token ID was tracked by this token', function () {
-        //     const tokenId = firstTokenId;
+        describe('ownerOf', function () {
+          context('when the given token ID was tracked by this token', function () {
+            const tokenId = firstTokenId;
     
-        //     it('returns the owner of the given token ID', async function () {
-        //       expect(await this.tokenAsBaseGetter.ownerOf(tokenId)).to.be.equal(this.signers.owner.address);
-        //     });
-        //   });
+            it('returns the owner of the given token ID', async function () {
+              expect(await this.tokenAsBaseGetter.callStatic.ownerOf(tokenId)).to.be.equal(this.signers.owner.address);
+            });
+          });
     
-        //   context('when the given token ID was not tracked by this token', function () {
-        //     const tokenId = nonExistentTokenId;
+          context('when the given token ID was not tracked by this token', function () {
+            const tokenId = nonExistentTokenId;
     
-        //     it('reverts', async function () {
-        //       await expectRevert(
-        //         this.tokenAsBaseGetter.ownerOf(tokenId), 'ERC721: owner query for nonexistent token',
-        //       );
-        //     });
-        //   });
-        // });
+            it('reverts', async function () {
+                await expect(this.tokenAsBaseGetter.ownerOf(tokenId)).to.be.revertedWith("ERC721: owner query for nonexistent token");
+            });
+          });
+        });
     
         // describe('transfers', function () {
         //   const tokenId = firstTokenId;
@@ -121,7 +119,7 @@ const shouldBehaveLikeERC721 = () => {
     
         //   const transferWasSuccessful = function (owner: string, tokenId: BigNumber) {
         //     it('transfers the ownership of the given token ID to the given address', async function () {
-        //       expect(await this.tokenAsBaseGetter.ownerOf(tokenId)).to.be.equal(this.toWhom);
+        //       expect(await this.tokenAsBaseGetter.callStatic.ownerOf(tokenId)).to.be.equal(this.toWhom);
         //     });
     
         //     it('emits a Transfer event', async function () {
@@ -129,7 +127,7 @@ const shouldBehaveLikeERC721 = () => {
         //     });
     
         //     it('clears the approval for the token ID', async function () {
-        //       expect(await this.tokenAsBaseGetter.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
+        //       expect(await this.tokenAsBaseGetter.callStatic.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
         //     });
     
         //     it('emits an Approval event', async function () {
@@ -137,7 +135,7 @@ const shouldBehaveLikeERC721 = () => {
         //     });
     
         //     it('adjusts owners balances', async function () {
-        //       expect(await this.tokenAsBaseGetter.balanceOf(owner)).to.equal(BigNumber.from(1));
+        //       expect(await this.tokenAsBaseGetter.callStatic.balanceOf(owner)).to.equal(BigNumber.from(1));
         //     });
     
         //     // Doesn't exist, not sure why this even exists @openzeppelin explain?
@@ -194,11 +192,11 @@ const shouldBehaveLikeERC721 = () => {
         //       });
     
         //       it('keeps ownership of the token', async function () {
-        //         expect(await this.tokenAsBaseGetter.ownerOf(tokenId)).to.be.equal(this.signers.owner.address);
+        //         expect(await this.tokenAsBaseGetter.callStatic.ownerOf(tokenId)).to.be.equal(this.signers.owner.address);
         //       });
     
         //       it('clears the approval for the token ID', async function () {
-        //         expect(await this.tokenAsBaseGetter.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
+        //         expect(await this.tokenAsBaseGetter.callStatic.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
         //       });
     
         //       it('emits only a transfer event', async function () {
@@ -210,7 +208,7 @@ const shouldBehaveLikeERC721 = () => {
         //       });
     
         //       it('keeps the owner balance', async function () {
-        //         expect(await this.tokenAsBaseGetter.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(2));
+        //         expect(await this.tokenAsBaseGetter.callStatic.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(2));
         //       });
     
         //     //   it('keeps same tokens by index', async function () {
@@ -475,13 +473,13 @@ const shouldBehaveLikeERC721 = () => {
     
         //   const itClearsApproval = function () {
         //     it('clears approval for the token', async function () {
-        //       expect(await this.tokenAsBaseGetter.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
+        //       expect(await this.tokenAsBaseGetter.callStatic.getApproved(tokenId)).to.be.equal(ZERO_ADDRESS);
         //     });
         //   };
     
         //   const itApproves = function (address: any) {
         //     it('sets the approval for the target address', async function () {
-        //       expect(await this.tokenAsBaseGetter.getApproved(tokenId)).to.be.equal(address);
+        //       expect(await this.tokenAsBaseGetter.callStatic.getApproved(tokenId)).to.be.equal(address);
         //     });
         //   };
     
@@ -602,7 +600,7 @@ const shouldBehaveLikeERC721 = () => {
         //       it('approves the operator', async function () {
         //         await this.tokenAsApprove.setApprovalForAll(this.operator, true, { from: this.signers.owner.address });
     
-        //         expect(await this.tokenAsBaseGetter.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
+        //         expect(await this.tokenAsBaseGetter.callStatic.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
         //       });
     
         //       it('emits an approval event', async function () {
@@ -624,7 +622,7 @@ const shouldBehaveLikeERC721 = () => {
         //       it('approves the operator', async function () {
         //         await this.tokenAsApprove.setApprovalForAll(this.operator, true, { from: this.signers.owner.address });
     
-        //         expect(await this.tokenAsBaseGetter.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
+        //         expect(await this.tokenAsBaseGetter.callStatic.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
         //       });
     
         //       it('emits an approval event', async function () {
@@ -640,7 +638,7 @@ const shouldBehaveLikeERC721 = () => {
         //       it('can unset the operator approval', async function () {
         //         await this.tokenAsApprove.setApprovalForAll(this.operator, false, { from: this.signers.owner.address });
     
-        //         expect(await this.tokenAsBaseGetter.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(false);
+        //         expect(await this.tokenAsBaseGetter.callStatic.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(false);
         //       });
         //     });
     
@@ -652,7 +650,7 @@ const shouldBehaveLikeERC721 = () => {
         //       it('keeps the approval to the given address', async function () {
         //         await this.tokenAsApprove.setApprovalForAll(this.operator, true, { from: this.signers.owner.address });
     
-        //         expect(await this.tokenAsBaseGetter.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
+        //         expect(await this.tokenAsBaseGetter.callStatic.isApprovedForAll(this.signers.owner.address, this.operator)).to.equal(true);
         //       });
     
         //       it('emits an approval event', async function () {
@@ -679,7 +677,7 @@ const shouldBehaveLikeERC721 = () => {
         //   context('when token is not minted', async function () {
         //     it('reverts', async function () {
         //       await expectRevert(
-        //         this.tokenAsBaseGetter.getApproved(nonExistentTokenId),
+        //         this.tokenAsBaseGetter.callStatic.getApproved(nonExistentTokenId),
         //         'ERC721: approved query for nonexistent token',
         //       );
         //     });
@@ -687,7 +685,7 @@ const shouldBehaveLikeERC721 = () => {
     
         //   context('when token has been minted ', async function () {
         //     it('should return the zero address', async function () {
-        //       expect(await this.tokenAsBaseGetter.getApproved(firstTokenId)).to.be.equal(
+        //       expect(await this.tokenAsBaseGetter.callStatic.getApproved(firstTokenId)).to.be.equal(
         //         ZERO_ADDRESS,
         //       );
         //     });
@@ -698,7 +696,7 @@ const shouldBehaveLikeERC721 = () => {
         //       });
     
         //       it('returns approved account', async function () {
-        //         expect(await this.tokenAsBaseGetter.getApproved(firstTokenId)).to.be.equal(this.approved);
+        //         expect(await this.tokenAsBaseGetter.callStatic.getApproved(firstTokenId)).to.be.equal(this.approved);
         //       });
         //     });
         //   });
@@ -722,8 +720,8 @@ const shouldBehaveLikeERC721 = () => {
     //       });
     
     //       it('creates the token', async function () {
-    //         expect(await this.tokenAsBaseGetter.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(1));
-    //         expect(await this.tokenAsBaseGetter.ownerOf(firstTokenId)).to.equal(this.signers.owner.address);
+    //         expect(await this.tokenAsBaseGetter.callStatic.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(1));
+    //         expect(await this.tokenAsBaseGetter.callStatic.ownerOf(firstTokenId)).to.equal(this.signers.owner.address);
     //       });
     
     //       it('reverts when adding a token id that already exists', async function () {
@@ -759,9 +757,9 @@ const shouldBehaveLikeERC721 = () => {
     //         });
     
     //         it('deletes the token', async function () {
-    //           expect(await this.tokenAsBaseGetter.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(1));
+    //           expect(await this.tokenAsBaseGetter.callStatic.balanceOf(this.signers.owner.address)).to.equal(BigNumber.from(1));
     //           await expectRevert(
-    //             this.tokenAsBaseGetter.ownerOf(firstTokenId), 'ERC721: owner query for nonexistent token',
+    //             this.tokenAsBaseGetter.callStatic.ownerOf(firstTokenId), 'ERC721: owner query for nonexistent token',
     //           );
     //         });
     
