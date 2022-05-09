@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { ContractTransaction } from "ethers";
+import { BigNumber, ContractTransaction } from "ethers";
 import { shouldBehaveLikeERC721Approve } from "./ERC721.approve.behaviour";
 import { shouldBehaveLikeERC721Balance } from "./ERC721.balance.behaviour";
 import { shouldBehaveLikeERC721Burn } from "./ERC721.burn.behaviour";
@@ -13,6 +13,21 @@ const shouldBehaveLikeERC721 = () => {
     shouldBehaveLikeERC721Balance();
     shouldBehaveLikeERC721Transfer();
 }
+
+export const Error = {
+    Panic: 3,
+    RevertWithoutMessage: 2,
+    RevertWithMessage: 1,
+    None: 0,
+}
+
+export const RECEIVER_MAGIC_VALUE = '0x150b7a02';
+
+export const firstTokenId = BigNumber.from(5042);
+export const secondTokenId = BigNumber.from(79217);
+export const thirdTokenId = BigNumber.from(123716236);
+export const fourthTokenId = BigNumber.from(4);
+export const nonExistentTokenId = BigNumber.from(182738971238);
 
 export const expectEvent = async (tx: ContractTransaction, eventName: string, params: any) => {
     const receipt = await tx.wait();

@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ContractTransaction, ethers } from "ethers";
 import { ethers as hreEthers, waffle } from "hardhat";
 
 const chai = require("chai");
@@ -6,14 +6,19 @@ const { solidity } = waffle;
 chai.use(solidity);
 const { expect, assert } = chai;
 
-module.exports = {
-    getExtendedContractWithInterface: async (address: string, contractInterface: string) => {
-        const LogicInterface = await hreEthers.getContractFactory(contractInterface);
-        return (await LogicInterface.attach(address));
-    },
+export const expectEvent = async (tx: ContractTransaction, eventName: string, params: any) => {
+    const receipt = await tx.wait();
+    const found = receipt.events?.find(e => e.event == eventName);
 
-    checkExtensions: async (contract: ethers.Contract, expectedInterfaceIds: string[], expectedContractAddresses: string[]) => {
-        expect(await contract.callStatic.getExtensions()).to.deep.equal(expectedInterfaceIds);
-        expect(await contract.callStatic.getExtensionAddresses()).to.deep.equal(expectedContractAddresses);
+    if (found) {
+        const decode = found.decode
+        if (decode) {
+            const eventParams = decode(found.data, found.topics);
+            
+            const paramKeys = Object.keys(params);
+            paramKeys.forEach(paramKey => {
+                expect(params[paramKey]).to.equal(eventParams[paramKey]);
+            })
+        }
     }
 }

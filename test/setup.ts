@@ -42,6 +42,7 @@ before("setup", async function () {
     this.signers.approved = signers[5];
     this.signers.anotherApproved = signers[6];
     this.signers.user = signers[7];
+    this.signers.newOwner = signers[8];
 
     const extendArtifact = await artifacts.readArtifact("ExtendLogic");
     const permissioningArtifact = await artifacts.readArtifact("PermissioningLogic");
@@ -62,6 +63,7 @@ before("setup", async function () {
 
     const enumerableGetterArtifact = await artifacts.readArtifact("EnumerableGetterLogic");
     const enumerableBeforeTransferArtifact = await artifacts.readArtifact("EnumerableBeforeTransferLogic");
+
     const metadataBurnArtifact = await artifacts.readArtifact("MetadataBurnLogic");
     const metadataGetterArtifact = await artifacts.readArtifact("MetadataGetterLogic");
     const setTokenUriArtifact = await artifacts.readArtifact("SetTokenURILogic");
@@ -99,6 +101,13 @@ before("setup", async function () {
     this.transfer = <TransferLogic>await waffle.deployContract(this.signers.admin, this.artifacts.transfer);
     this.erc721MockExtension = <ERC721MockExtension>await waffle.deployContract(this.signers.admin, this.artifacts.erc721MockExtension);
 
+    this.enumerableGetter = <EnumerableGetterLogic>await waffle.deployContract(this.signers.admin, this.artifacts.enumerableGetter);
+    this.enumerableBeforeTransfer = <EnumerableBeforeTransferLogic>await waffle.deployContract(this.signers.admin, this.artifacts.enumerableBeforeTransfer);
+
+    this.metadataBurn = <MetadataBurnLogic>await waffle.deployContract(this.signers.admin, this.artifacts.metadataBurn);
+    this.metadataGetter = <MetadataGetterLogic>await waffle.deployContract(this.signers.admin, this.artifacts.metadataGetter);
+    this.setTokenUri = <SetTokenURILogic>await waffle.deployContract(this.signers.admin, this.artifacts.setTokenUri);
+
     this.redeploy = async function () {
         this.erc721 = <Extended<ERC721>>await deployExtendableContract(this.signers.admin, this.artifacts.erc721, ["TOKEN_NAME", "TOKEN_SYMBOL", this.extend.address, this.approve.address, this.baseGetter.address, this.onReceive.address, this.transfer.address, this.beforeTransfer.address]) 
         this.tokenAsExtend = <ExtendLogic>await this.erc721.as(this.artifacts.extend);
@@ -111,5 +120,20 @@ before("setup", async function () {
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721.as(this.artifacts.transfer);
         this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721.as(this.artifacts.erc721MockExtension);
+    }
+
+    this.redeployEnumerable = async function () {
+        this.erc721Enumerable = <Extended<ERC721Enumerable>>await deployExtendableContract(this.signers.admin, this.artifacts.erc721Enumerable, ["TOKEN_NAME", "TOKEN_SYMBOL", this.extend.address, this.approve.address, this.baseGetter.address, this.onReceive.address, this.transfer.address, this.enumerableBeforeTransfer.address, this.enumerableGetter.address]) 
+        this.tokenAsExtend = <ExtendLogic>await this.erc721Enumerable.as(this.artifacts.extend);
+        await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+
+        this.tokenAsApprove = <ApproveLogic>await this.erc721Enumerable.as(this.artifacts.approve);
+        this.tokenAsBurn = <BasicBurnLogic>await this.erc721Enumerable.as(this.artifacts.burn);
+        this.tokenAsBaseGetter = <GetterLogic>await this.erc721Enumerable.as(this.artifacts.baseGetter);
+        this.tokenAsEnumerableGetter = <EnumerableGetterLogic>await this.erc721Enumerable.as(this.artifacts.enumerableGetter);
+        this.tokenAsEnumerableBeforeTransfer = <EnumerableBeforeTransferLogic>await this.erc721Enumerable.as(this.artifacts.enumerableBeforeTransfer);
+        this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Enumerable.as(this.artifacts.onReceive);
+        this.tokenAsTransfer = <TransferLogic>await this.erc721Enumerable.as(this.artifacts.transfer);
+        this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721Enumerable.as(this.artifacts.erc721MockExtension);
     }
 });

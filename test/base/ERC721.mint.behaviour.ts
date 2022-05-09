@@ -1,29 +1,14 @@
-import { TransactionReceipt } from "@ethersproject/providers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { BigNumber, ContractReceipt, ContractTransaction } from "ethers";
-import { ethers, waffle } from "hardhat";
+import { BigNumber, ContractTransaction } from "ethers";
+import { waffle } from "hardhat";
 import { 
   ERC721ReceiverMock,
  } from "../../src/types";
-import { expectEvent } from "./ERC721.behaviour";
+import { expectEvent } from "../utils/utils";
+import { Error, firstTokenId, fourthTokenId, RECEIVER_MAGIC_VALUE } from "./ERC721.behaviour";
 
 const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
-
-const Error = {
-  Panic: 3,
-  RevertWithoutMessage: 2,
-  RevertWithMessage: 1,
-  None: 0,
-}
-
-const firstTokenId = BigNumber.from(5042);
-const secondTokenId = BigNumber.from(79217);
-const nonExistentTokenId = BigNumber.from(182738971238);
-const fourthTokenId = BigNumber.from(4);
-
-const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
 const shouldBehaveLikeERC721Mint = () => {
     let tx: ContractTransaction;

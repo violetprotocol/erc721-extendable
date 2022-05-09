@@ -1,6 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+import "hardhat/console.sol";
 import { ERC721EnumerableState, ERC721EnumerableStorage } from "../../../storage/ERC721EnumerableStorage.sol";
 import "../../base/hooks/BeforeTransferLogic.sol";
 import "../../base/getter/IGetterLogic.sol";
@@ -46,10 +47,10 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
      * @param tokenId uint256 ID of the token to be added to the tokens list of the given address
      */
     function _addTokenToOwnerEnumeration(address to, uint256 tokenId) private {
-        // uint256 length = ERC721Logic.balanceOf(to);
-        // ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
-        // state._ownedTokens[to][length] = tokenId;
-        // state._ownedTokensIndex[tokenId] = length;
+        uint256 length = IGetterLogic(address(this)).balanceOf(to);
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        state._ownedTokens[to][length] = tokenId;
+        state._ownedTokensIndex[tokenId] = length;
     }
 
     /**

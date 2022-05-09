@@ -1,48 +1,9 @@
-import { TransactionReceipt } from "@ethersproject/providers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { BigNumber, ContractReceipt, ContractTransaction } from "ethers";
-import { ethers, waffle } from "hardhat";
-import { 
-  ExtendLogic,
-  PermissioningLogic,
-  ERC721,
-  ERC721Metadata,
-  ERC721Enumerable,
-  ERC721MockExtension,
-  ERC721ReceiverMock,
-  ApproveLogic,
-  BasicBurnLogic,
-  GetterLogic,
-  BeforeTransferLogic,
-  BasicMintLogic,
-  OnReceiveLogic,
-  TransferLogic,
-  EnumerableGetterLogic,
-  EnumerableBeforeTransferLogic,
-  MetadataBurnLogic,
-  MetadataGetterLogic,
-  SetTokenURILogic,
- } from "../../src/types";
-import { attachExtendableContract, deployExtendableContract, Extended, Signers } from "../types";
-import { EXTEND_LOGIC_INTERFACE, PERMISSIONING_LOGIC_INTERFACE, TOKEN_LOGIC_INTERFACE } from "../utils/constants";
+import { BigNumber } from "ethers";
+import { firstTokenId, nonExistentTokenId, secondTokenId } from "./ERC721.behaviour";
 
-const { BN, constants, expectRevert } = require('@openzeppelin/test-helpers');
+const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
-
-const Error = {
-  Panic: 3,
-  RevertWithoutMessage: 2,
-  RevertWithMessage: 1,
-  None: 0,
-}
-
-const firstTokenId = BigNumber.from(5042);
-const secondTokenId = BigNumber.from(79217);
-const nonExistentTokenId = BigNumber.from(182738971238);
-const fourthTokenId = BigNumber.from(4);
-
-const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
 const shouldBehaveLikeERC721Balance = () => {
     context('balance with minted tokens', async function () {
