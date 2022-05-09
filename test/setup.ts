@@ -1,7 +1,28 @@
 import { artifacts, ethers, waffle } from "hardhat";
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
-import { Signers } from "./types";
+import { deployExtendableContract, Extended, Signers } from "./types";
 import { Artifacts } from "hardhat/types";
+import { 
+  ExtendLogic,
+  PermissioningLogic,
+  ERC721,
+  ERC721Metadata,
+  ERC721Enumerable,
+  ERC721MockExtension,
+  ERC721ReceiverMock,
+  ApproveLogic,
+  BasicBurnLogic,
+  GetterLogic,
+  BeforeTransferLogic,
+  BasicMintLogic,
+  OnReceiveLogic,
+  TransferLogic,
+  EnumerableGetterLogic,
+  EnumerableBeforeTransferLogic,
+  MetadataBurnLogic,
+  MetadataGetterLogic,
+  SetTokenURILogic,
+ } from "../src/types";
 
 const chai = require("chai");
 const { solidity } = waffle;
@@ -9,7 +30,8 @@ chai.use(solidity);
 const { expect } = chai;
 const { BigNumber } = ethers;
 
-before("setup", async function () {this.signers = {} as Signers;
+before("setup", async function () {
+    this.signers = {} as Signers;
     
     const signers: SignerWithAddress[] = await ethers.getSigners();
     this.signers.admin = signers[0];
@@ -64,5 +86,30 @@ before("setup", async function () {this.signers = {} as Signers;
         metadataBurn: metadataBurnArtifact,
         metadataGetter: metadataGetterArtifact,
         setTokenUri: setTokenUriArtifact
+    }
+
+    this.extend = <ExtendLogic>(await waffle.deployContract(this.signers.admin, this.artifacts.extend));
+    this.permissioning = <PermissioningLogic>await waffle.deployContract(this.signers.admin, this.artifacts.permissioning);
+    this.approve = <ApproveLogic>await waffle.deployContract(this.signers.admin, this.artifacts.approve);
+    this.burn = <BasicBurnLogic>await waffle.deployContract(this.signers.admin, this.artifacts.burn);
+    this.baseGetter = <GetterLogic>await waffle.deployContract(this.signers.admin, this.artifacts.baseGetter);
+    this.beforeTransfer = <BeforeTransferLogic>await waffle.deployContract(this.signers.admin, this.artifacts.beforeTransfer);
+    this.mint = <BasicMintLogic>await waffle.deployContract(this.signers.admin, this.artifacts.mint);
+    this.onReceive = <OnReceiveLogic>await waffle.deployContract(this.signers.admin, this.artifacts.onReceive);
+    this.transfer = <TransferLogic>await waffle.deployContract(this.signers.admin, this.artifacts.transfer);
+    this.erc721MockExtension = <ERC721MockExtension>await waffle.deployContract(this.signers.admin, this.artifacts.erc721MockExtension);
+
+    this.redeploy = async function () {
+        this.erc721 = <Extended<ERC721>>await deployExtendableContract(this.signers.admin, this.artifacts.erc721, ["TOKEN_NAME", "TOKEN_SYMBOL", this.extend.address, this.approve.address, this.baseGetter.address, this.onReceive.address, this.transfer.address, this.beforeTransfer.address]) 
+        this.tokenAsExtend = <ExtendLogic>await this.erc721.as(this.artifacts.extend);
+        await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    
+        this.tokenAsApprove = <ApproveLogic>await this.erc721.as(this.artifacts.approve);
+        this.tokenAsBurn = <BasicBurnLogic>await this.erc721.as(this.artifacts.burn);
+        this.tokenAsBaseGetter = <GetterLogic>await this.erc721.as(this.artifacts.baseGetter);
+        this.tokenAsBeforeTransfer = <BeforeTransferLogic>await this.erc721.as(this.artifacts.beforeTransfer);
+        this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721.as(this.artifacts.onReceive);
+        this.tokenAsTransfer = <TransferLogic>await this.erc721.as(this.artifacts.transfer);
+        this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721.as(this.artifacts.erc721MockExtension);
     }
 });

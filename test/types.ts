@@ -49,6 +49,7 @@ declare module "mocha" {
     metadataBurn: MetadataBurnLogic;
     metadataGetter: MetadataGetterLogic;
     setTokenUri: SetTokenURILogic;
+    redeploy: () => void;
     loadFixture: <T>(fixture: Fixture<T>) => Promise<T>;
     signers: Signers;
   }
