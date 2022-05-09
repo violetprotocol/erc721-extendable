@@ -16,4 +16,9 @@ interface IMetadataGetterLogic {
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function tokenURI(uint256 tokenId) external returns (string memory);
+
+    /**
+     * @dev Returns the base URI for all tokens.
+     */
+    function baseURI() external returns (string memory);
 }

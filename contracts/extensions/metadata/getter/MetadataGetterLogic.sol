@@ -59,14 +59,23 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
         string memory baseURI = _baseURI();
         return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
+
+    
+    /**
+     * @dev See {IERC721Metadata-_baseURI}.
+     */
+    function baseURI() override public virtual returns (string memory) {
+        return _baseURI();
+    }
     
     /**
      * @dev Base URI for computing {tokenURI}. If set, the resulting URI for each
      * token will be the concatenation of the `baseURI` and the `tokenId`. Empty
      * by default, can be overriden in child contracts.
      */
-    function _baseURI() internal view virtual returns (string memory) {
-        return "";
+    function _baseURI() internal virtual returns (string memory) {
+        TokenURIState storage state = TokenURIStorage._getStorage();
+        return state.baseURI;
     }
 
 
@@ -77,6 +86,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
     function getInterface() override virtual public pure returns(string memory) {
         return  "function name() external view returns (string memory);\n"
                 "function symbol() external view returns (string memory);\n"
-                "function tokenURI(uint256 tokenId) external view returns (string memory);\n";
+                "function tokenURI(uint256 tokenId) external view returns (string memory);\n"
+                "function baseURI() external returns (string memory);\n";
     }
 }

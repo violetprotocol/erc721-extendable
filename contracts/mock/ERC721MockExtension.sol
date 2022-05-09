@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "../extensions/base/ERC721.sol";
 import "../extensions/base/getter/IGetterLogic.sol";
 import "../extensions/base/mint/MintLogic.sol";

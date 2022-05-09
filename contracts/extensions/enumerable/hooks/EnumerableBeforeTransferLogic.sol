@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import { ERC721EnumerableState, ERC721EnumerableStorage } from "../../../storage/ERC721EnumerableStorage.sol";
 import "../../base/hooks/BeforeTransferLogic.sol";
 import "../../base/getter/IGetterLogic.sol";

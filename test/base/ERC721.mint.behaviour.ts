@@ -4,18 +4,19 @@ import { waffle } from "hardhat";
 import { 
   ERC721ReceiverMock,
  } from "../../src/types";
+import { MODULE } from "../setup";
 import { expectEvent } from "../utils/utils";
 import { Error, firstTokenId, fourthTokenId, RECEIVER_MAGIC_VALUE } from "./ERC721.behaviour";
 
 const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-const shouldBehaveLikeERC721Mint = () => {
+const shouldBehaveLikeERC721Mint = (module: MODULE) => {
     let tx: ContractTransaction;
 
     context('_mint', function () {
         beforeEach(async function () {
-            await this.redeploy();
+            await this.redeploy(module);
         })
 
         it('reverts with a null destination address', async function () {
@@ -26,7 +27,7 @@ const shouldBehaveLikeERC721Mint = () => {
 
         context('with minted token', async function () {
             beforeEach(async function () {
-                await this.redeploy();
+                await this.redeploy(module);
                 tx = await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
             });
 
@@ -49,12 +50,12 @@ const shouldBehaveLikeERC721Mint = () => {
                 const data = '0x42';
 
                 beforeEach(async function () {
-                    await this.redeploy();
+                    await this.redeploy(module);
                 });
           
                 describe('via safeMint', function () {
                     beforeEach(async function () {
-                        await this.redeploy();
+                        await this.redeploy(module);
                     });
 
                   it('calls onERC721Received — with data', async function () {
@@ -116,7 +117,7 @@ const shouldBehaveLikeERC721Mint = () => {
           
                   context('to a contract that does not implement the required function', function () {
                     it('reverts', async function () {
-                      const nonReceiver = this.erc721;
+                      const nonReceiver = this.extend;
                       await expect(
                         this.tokenAsErc721MockExtension["safeMint(address,uint256)"](nonReceiver.address, tokenId))
                         .to.be.revertedWith('ERC721: transfer to non ERC721Receiver implementer')

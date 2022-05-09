@@ -2,11 +2,12 @@ import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { firstTokenId, secondTokenId } from "../base/ERC721.behaviour";
+import { MODULE } from "../setup";
 
-export function shouldBehaveLikeERC721Enumerable () {
+export function shouldBehaveLikeERC721Enumerable (module: MODULE) {
     context('with minted tokens', function () {
       beforeEach(async function () {
-        await this.redeployEnumerable();
+        await this.redeploy(module);
         await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
         await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
         this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
@@ -104,7 +105,7 @@ export function shouldBehaveLikeERC721Enumerable () {
   
     describe('_mint(address, uint256)', function () {
      beforeEach(async function() {
-        await this.redeployEnumerable();
+        await this.redeploy(module);
      })
 
       it('reverts with a null destination address', async function () {
@@ -129,7 +130,7 @@ export function shouldBehaveLikeERC721Enumerable () {
   
     describe('_burn', function () {
      beforeEach(async function() {
-        await this.redeployEnumerable();
+        await this.redeploy(module);
      })
 
       it('reverts when burning a non-existent token id', async function () {

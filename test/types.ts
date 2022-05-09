@@ -24,6 +24,7 @@ import {
 import { Artifact } from "hardhat/types";
 import { Contract } from "ethers";
 import { waffle, ethers } from "hardhat";
+import { MODULE } from "./setup";
 
 declare module "mocha" {
   export interface Context {
@@ -49,7 +50,11 @@ declare module "mocha" {
     metadataBurn: MetadataBurnLogic;
     metadataGetter: MetadataGetterLogic;
     setTokenUri: SetTokenURILogic;
-    redeploy: () => void;
+    redeploy: (module: MODULE) => void;
+    redeployBase: () => void;
+    redeployEnumerable: () => void;
+    redeployMetadata: () => void;
+    redeployMetadataEnumerable: () => void;
     loadFixture: <T>(fixture: Fixture<T>) => Promise<T>;
     signers: Signers;
   }

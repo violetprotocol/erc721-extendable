@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 struct TokenURIState {
     // Mapping from token ID to token uri
     mapping(uint256 => string) _tokenURIs;
+    string baseURI;
 }
 
 library TokenURIStorage {

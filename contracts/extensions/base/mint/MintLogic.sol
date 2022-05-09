@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";

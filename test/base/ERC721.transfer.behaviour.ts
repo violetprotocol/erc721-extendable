@@ -4,10 +4,10 @@ import { expect } from "chai";
 import { BigNumber, ContractTransaction } from "ethers";
 import { waffle } from "hardhat";
 import { 
-  ERC721MockExtension,
   ERC721ReceiverMock,
   TransferLogic,
  } from "../../src/types";
+import { MODULE } from "../setup";
 import { Signers } from "../types";
 import { expectEvent } from "../utils/utils";
 import { Error, firstTokenId, nonExistentTokenId, RECEIVER_MAGIC_VALUE, secondTokenId } from "./ERC721.behaviour";
@@ -15,15 +15,10 @@ import { Error, firstTokenId, nonExistentTokenId, RECEIVER_MAGIC_VALUE, secondTo
 const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-const shouldBehaveLikeERC721Transfer = () => {
-    const mintNew = async (tokenMint: ERC721MockExtension, signers: Signers) => {
-        await tokenMint.mint(signers.owner.address, firstTokenId);
-        await tokenMint.mint(signers.owner.address, secondTokenId);
-    }
-
+const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
     context('with minted tokens', async function () {
         before(async function () {
-            await this.redeploy();
+            await this.redeploy(module);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
             this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
@@ -33,12 +28,10 @@ const shouldBehaveLikeERC721Transfer = () => {
             const tokenId = firstTokenId;
             const data = '0x42';
         
-            let logs: any = null;
             let tx: ContractTransaction;
-            let newTokenId = 0;
         
             beforeEach(async function () {
-                await this.redeploy();
+                await this.redeploy(module);
                 await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, tokenId);
                 await expect(this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, tokenId)).to.not.be.reverted;
                 await expect(this.tokenAsApprove.connect(this.signers.owner).setApprovalForAll(this.signers.operator.address, true)).to.not.be.reverted;
@@ -65,19 +58,17 @@ const shouldBehaveLikeERC721Transfer = () => {
                     expect(await this.tokenAsBaseGetter.callStatic.balanceOf(owner)).to.equal(BigNumber.from(1));
                 });
         
-                // Doesn't exist, not sure why this test even exists @openzeppelin explain?
-                // it('adjusts owners tokens by index', async function () {
-                //   if (!this.token.tokenOfOwnerByIndex) return;
+                it('adjusts owners tokens by index', async function () {
+                  if (!module.includes(MODULE.ENUMERABLE)) return;
         
-                //   expect(await this.token.tokenOfOwnerByIndex(this.toWhom, 0)).to.be.bignumber.equal(tokenId);
-        
-                //   expect(await this.token.tokenOfOwnerByIndex(owner, 0)).to.be.bignumber.not.equal(tokenId);
-                // });
+                  expect(await this.tokenAsEnumerableGetter.tokenOfOwnerByIndex(this.toWhom, 0)).to.equal(tokenId);
+                  expect(await this.tokenAsEnumerableGetter.tokenOfOwnerByIndex(this.signers.owner.address, 0)).to.not.equal(tokenId);
+                });
             };
         
             const shouldTransferTokensByUsers = async function (transferFunction: (tokenAsTransfer: TransferLogic, signer: SignerWithAddress, from: string, to: string, tokenId: BigNumber, opts?: any) => Promise<ContractTransaction | TransactionReceipt>) {
                 beforeEach(async function () {
-                    await this.redeploy();
+                    await this.redeploy(module);
                     await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
                     await expect(this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, firstTokenId)).to.not.be.reverted;
                     await expect(this.tokenAsApprove.connect(this.signers.owner).setApprovalForAll(this.signers.operator.address, true)).to.not.be.reverted;
@@ -114,8 +105,9 @@ const shouldBehaveLikeERC721Transfer = () => {
         
                 context('when sent to the owner', function () {
                     before(async function () {
-                        await this.redeploy();
+                        await this.redeploy(module);
                         await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
+                        await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId)).to.not.be.reverted;
                         tx = <ContractTransaction><any>await transferFunction(this.tokenAsTransfer, this.signers.owner, this.signers.owner.address, this.signers.owner.address, firstTokenId);
                     });
             
@@ -136,18 +128,18 @@ const shouldBehaveLikeERC721Transfer = () => {
                     });
             
                     it('keeps the owner balance', async function () {
-                        expect(await this.tokenAsBaseGetter.callStatic.balanceOf(this.signers.owner.address)).to.equal(1);
+                        expect(await this.tokenAsBaseGetter.callStatic.balanceOf(this.signers.owner.address)).to.equal(2);
                     });
             
-                    //   it('keeps same tokens by index', async function () {
-                    //     if (!this.token.tokenOfOwnerByIndex) return;
-                    //     const tokensListed = await Promise.all(
-                    //       [0, 1].map(i => this.token.tokenOfOwnerByIndex(this.signers.owner.address, i)),
-                    //     );
-                    //     expect(tokensListed.map(t => t.toNumber())).to.have.members(
-                    //       [firstTokenId.toNumber(), secondTokenId.toNumber()],
-                    //     );
-                    //   });
+                    it('keeps same tokens by index', async function () {
+                        if (!module.includes(MODULE.ENUMERABLE)) return;
+                        const tokensListed = await Promise.all(
+                            [0, 1].map(i => this.tokenAsEnumerableGetter.callStatic.tokenOfOwnerByIndex(this.signers.owner.address, i)),
+                        );
+                        expect(tokensListed.map(t => t.toNumber())).to.have.members(
+                            [firstTokenId.toNumber(), secondTokenId.toNumber()],
+                        );
+                    });
                 });
         
                 context('when the address of the previous owner is incorrect', function () {
@@ -290,7 +282,7 @@ const shouldBehaveLikeERC721Transfer = () => {
         
                 describe('to a contract that does not implement the required function', function () {
                   it('reverts', async function () {
-                    const nonReceiver = this.erc721;
+                    const nonReceiver = this.extend;
                     await expect(this.tokenAsTransfer.connect(this.signers.owner)['safeTransferFrom(address,address,uint256)'](this.signers.owner.address, nonReceiver.address, tokenId))
                         .to.be.revertedWith("ERC721: transfer to non ERC721Receiver implementer");
                   });

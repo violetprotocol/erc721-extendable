@@ -1,17 +1,18 @@
 import { expect } from "chai";
 import { BigNumber, ContractTransaction } from "ethers";
+import { MODULE } from "../setup";
 import { expectEvent } from "../utils/utils";
 import { firstTokenId, nonExistentTokenId } from "./ERC721.behaviour";
 
 const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-const shouldBehaveLikeERC721Burn = () => {
+const shouldBehaveLikeERC721Burn = (module: MODULE) => {
   context('_burn', function () {
     let tx: ContractTransaction;
 
     beforeEach(async function () {
-        await this.redeploy();
+        await this.redeploy(module);
     })
 
     it('reverts when burning a non-existent token id', async function () {
@@ -20,7 +21,7 @@ const shouldBehaveLikeERC721Burn = () => {
 
     context('with minted tokens', function () {
       beforeEach(async function () {
-        await this.redeploy();
+        await this.redeploy(module);
         await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
       });
 

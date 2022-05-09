@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { BigNumber } from "ethers";
+import { MODULE } from "../setup";
 import { firstTokenId, nonExistentTokenId, secondTokenId } from "./ERC721.behaviour";
 
 const { constants } = require('@openzeppelin/test-helpers');
 const { ZERO_ADDRESS } = constants;
 
-const shouldBehaveLikeERC721Balance = () => {
+const shouldBehaveLikeERC721Balance = (module: MODULE) => {
     context('balance with minted tokens', async function () {
         before(async function () {
-            await this.redeploy();
+            await this.redeploy(module);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
             this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
