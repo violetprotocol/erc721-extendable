@@ -4,13 +4,12 @@ pragma solidity ^0.8.4;
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import "./IApproveLogic.sol";
-import "./IApproveInternalLogic.sol";
 import "../getter/IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 // To follow Extension principles, maybe best to separate each function into a different Extension
-contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension {
+contract ApproveLogic is IApproveLogic, InternalExtension {
     /**
      * @dev See {IERC721-approve}.
      */
@@ -23,7 +22,8 @@ contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension
             "ERC721: approve caller is not owner nor approved for all"
         );
 
-        _approve(to, tokenId);
+        // must use external call for _internal to resolve correctly
+        IApproveLogic(address(this))._approve(to, tokenId);
     }
 
     /**
@@ -66,6 +66,7 @@ contract ApproveLogic is IApproveLogic, IApproveInternalLogic, InternalExtension
 
     function getInterface() override virtual public pure returns(string memory) {
         return  "function approve(address to, uint256 tokenId) external;\n"
-                "function setApprovalForAll(address operator, bool approved) external;\n";
+                "function setApprovalForAll(address operator, bool approved) external;\n"
+                "function _approve(address to, uint256 tokenId) external;\n";
     }
 }

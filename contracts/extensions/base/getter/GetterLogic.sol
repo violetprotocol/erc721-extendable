@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
-import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import "./IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -39,7 +38,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
      * @dev See {IERC721-getApproved}.
      */
     function getApproved(uint256 tokenId) public virtual override returns (address) {
-        require(_exists(tokenId), "ERC721: approved query for nonexistent token");
+        require(IGetterLogic(address(this))._exists(tokenId), "ERC721: approved query for nonexistent token");
         ERC721State storage erc721Storage = ERC721Storage._getStorage();
 
         return erc721Storage._tokenApprovals[tokenId];
@@ -65,10 +64,9 @@ contract GetterLogic is IGetterLogic, InternalExtension {
      * @dev See {IGetterLogic-_isApprovedOrOwner}.
      */
     function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal virtual returns (bool) {
-        require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+        require(IGetterLogic(address(this))._exists(tokenId), "ERC721: operator query for nonexistent token");
         address owner = ownerOf(tokenId);
-        RoleState storage roles = Permissions._getStorage();
-        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender) || (tx.origin == roles.owner && spender == address(this)));
+        return (spender == owner || spender == getApproved(tokenId) || isApprovedForAll(owner, spender));
     }
 
 

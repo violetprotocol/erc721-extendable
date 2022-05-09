@@ -21,4 +21,9 @@ interface IApproveLogic {
      * @dev See {IERC721-approve}.
      */
     function approve(address to, uint256 tokenId) external;
+
+    /**
+     * @dev See {IERC721-approve}.
+     */
+    function _approve(address to, uint256 tokenId) external;
 }

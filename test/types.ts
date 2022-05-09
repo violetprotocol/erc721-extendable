@@ -58,6 +58,7 @@ export interface Signers {
   admin: SignerWithAddress;
   operator: SignerWithAddress;
   owner: SignerWithAddress;
+  toWhom: SignerWithAddress;
   other: SignerWithAddress;
   approved: SignerWithAddress;
   anotherApproved: SignerWithAddress;

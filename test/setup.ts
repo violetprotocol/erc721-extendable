@@ -15,10 +15,11 @@ before("setup", async function () {this.signers = {} as Signers;
     this.signers.admin = signers[0];
     this.signers.operator = signers[1];
     this.signers.owner = signers[2];
-    this.signers.other = signers[3];
-    this.signers.approved = signers[4];
-    this.signers.anotherApproved = signers[5];
-    this.signers.user = signers[6];
+    this.signers.toWhom = signers[3];
+    this.signers.other = signers[4];
+    this.signers.approved = signers[5];
+    this.signers.anotherApproved = signers[6];
+    this.signers.user = signers[7];
 
     const extendArtifact = await artifacts.readArtifact("ExtendLogic");
     const permissioningArtifact = await artifacts.readArtifact("PermissioningLogic");
