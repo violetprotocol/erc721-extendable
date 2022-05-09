@@ -45,7 +45,7 @@ const fourthTokenId = BigNumber.from(4);
 const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
 const shouldBehaveLikeERC721Balance = () => {
-    context('with minted tokens', async function () {
+    context('balance with minted tokens', async function () {
         before(async function () {
             await this.redeploy();
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);

@@ -7,11 +7,11 @@ import { shouldBehaveLikeERC721Mint } from "./ERC721.mint.behaviour";
 import { shouldBehaveLikeERC721Transfer } from "./ERC721.transfer.behaviour";
 
 const shouldBehaveLikeERC721 = () => {
-    // shouldBehaveLikeERC721Mint();
-    // shouldBehaveLikeERC721Burn();
-    // shouldBehaveLikeERC721Approve();
+    shouldBehaveLikeERC721Mint();
+    shouldBehaveLikeERC721Burn();
+    shouldBehaveLikeERC721Approve();
     shouldBehaveLikeERC721Balance();
-    // shouldBehaveLikeERC721Transfer();
+    shouldBehaveLikeERC721Transfer();
 }
 
 export const expectEvent = async (tx: ContractTransaction, eventName: string, params: any) => {
@@ -25,9 +25,6 @@ export const expectEvent = async (tx: ContractTransaction, eventName: string, pa
             
             const paramKeys = Object.keys(params);
             paramKeys.forEach(paramKey => {
-                // console.log(params[paramKey]);
-                // console.log(eventParams[paramKey]);
-
                 expect(params[paramKey]).to.equal(eventParams[paramKey]);
             })
         }
