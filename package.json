@@ -23,14 +23,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/violetprotocol/erc721-extension.git"
+    "url": "git+https://github.com/violetprotocol/erc721-extendable.git"
   },
   "author": "papasmurf",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/violetprotocol/erc721-extension/issues"
+    "url": "https://github.com/violetprotocol/erc721-extendable/issues"
   },
-  "homepage": "https://github.com/violetprotocol/erc721-extension#readme",
+  "homepage": "https://github.com/violetprotocol/erc721-extendable#readme",
   "devDependencies": {
     "@codechecks/client": "^0.1.12",
     "@commitlint/cli": "^16.2.1",
