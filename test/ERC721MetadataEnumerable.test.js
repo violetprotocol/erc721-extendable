@@ -10,6 +10,6 @@ chai.use(solidity);
 
 describe("ERC721MetadataEnumerable", function () {
     shouldBehaveLikeERC721(MODULE.METADATAENUMERABLE);
-    // shouldBehaveLikeERC721Metadata(MODULE.METADATAENUMERABLE);
-    // shouldBehaveLikeERC721Enumerable(MODULE.METADATAENUMERABLE);
+    shouldBehaveLikeERC721Metadata(MODULE.METADATAENUMERABLE);
+    shouldBehaveLikeERC721Enumerable(MODULE.METADATAENUMERABLE);
 });
