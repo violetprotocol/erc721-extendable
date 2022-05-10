@@ -7,7 +7,7 @@ import "./SetTokenURILogic.sol";
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 
-// This contract should be inherited by your own custom `mint` logic which makes a call to `_mint` or `_safeMint`
+// This contract should be inherited by your own custom `setTokenURI` logic which makes a call to `_setTokenURI` or `_setBaseURI`
 contract BasicSetTokenURILogic is IBasicSetTokenURILogic, SetTokenURILogic {
     /**
      * @dev See {ISetTokenURILogic-_setTokenURI}.
