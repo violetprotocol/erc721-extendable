@@ -25,7 +25,7 @@ contract ERC721MockExtension is MintLogic, BurnLogic {
         return "";
     }
 
-    function exists(uint256 tokenId) public view returns (bool) {
+    function exists(uint256 tokenId) public returns (bool) {
         return IGetterLogic(address(this))._exists(tokenId);
     }
 

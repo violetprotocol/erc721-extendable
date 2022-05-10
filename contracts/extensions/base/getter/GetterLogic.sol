@@ -1,12 +1,10 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
-import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import "./IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -19,18 +17,18 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-balanceOf}.
      */
-    function balanceOf(address owner) public view virtual override returns (uint256) {
+    function balanceOf(address owner) public virtual override returns (uint256) {
         require(owner != address(0), "ERC721: balance query for the zero address");
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        return erc721Storage._balances[owner];
+        ERC721State storage erc721State = ERC721Storage._getState();
+        return erc721State._balances[owner];
     }
 
     /**
      * @dev See {IERC721-ownerOf}.
      */
-    function ownerOf(uint256 tokenId) public view virtual override returns (address) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        address owner = erc721Storage._owners[tokenId];
+    function ownerOf(uint256 tokenId) public virtual override returns (address) {
+        ERC721State storage erc721State = ERC721Storage._getState();
+        address owner = erc721State._owners[tokenId];
         require(owner != address(0), "ERC721: owner query for nonexistent token");
         return owner;
     }
@@ -38,37 +36,36 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-getApproved}.
      */
-    function getApproved(uint256 tokenId) public view virtual override returns (address) {
-        require(_exists(tokenId), "ERC721: approved query for nonexistent token");
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
+    function getApproved(uint256 tokenId) public virtual override returns (address) {
+        require(IGetterLogic(address(this))._exists(tokenId), "ERC721: approved query for nonexistent token");
+        ERC721State storage erc721State = ERC721Storage._getState();
 
-        return erc721Storage._tokenApprovals[tokenId];
+        return erc721State._tokenApprovals[tokenId];
     }
 
     /**
      * @dev See {IERC721-isApprovedForAll}.
      */
     function isApprovedForAll(address owner, address operator) override public view virtual returns (bool) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        return erc721Storage._operatorApprovals[owner][operator];
+        ERC721State storage erc721State = ERC721Storage._getState();
+        return erc721State._operatorApprovals[owner][operator];
     }
 
     /**
      * @dev See {IGetterLogic-_exists}.
      */
-    function _exists(uint256 tokenId) override public _internal view returns (bool) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        return erc721Storage._owners[tokenId] != address(0);
+    function _exists(uint256 tokenId) override public _internal returns (bool) {
+        ERC721State storage erc721State = ERC721Storage._getState();
+        return erc721State._owners[tokenId] != address(0);
     }
 
     /**
      * @dev See {IGetterLogic-_isApprovedOrOwner}.
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal view virtual returns (bool) {
-        require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+    function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal virtual returns (bool) {
+        require(IGetterLogic(address(this))._exists(tokenId), "ERC721: operator query for nonexistent token");
         address owner = ownerOf(tokenId);
-        RoleState storage roles = Permissions._getStorage();
-        return (spender == owner || getApproved(tokenId) == spender || isApprovedForAll(owner, spender) || (tx.origin == roles.owner && spender == address(this)));
+        return (spender == owner || spender == getApproved(tokenId) || isApprovedForAll(owner, spender));
     }
 
 

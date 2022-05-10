@@ -19,7 +19,7 @@ contract BasicMintLogic is IBasicMintLogic, MintLogic {
      *
      * Emits a {Transfer} event.
      */
-    function mint(address to, uint256 tokenId) override public {
+    function mint(address to, uint256 tokenId) override virtual public {
         _safeMint(to, tokenId);
     }
 

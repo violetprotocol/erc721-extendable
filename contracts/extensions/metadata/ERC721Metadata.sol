@@ -11,18 +11,20 @@ contract ERC721Metadata is ERC721 {
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
-        address beforeTransferLogic,
+        address beforeTransferLogic) 
+    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {}
+
+    function finaliseERC721MetadataExtending(
         address metadataGetterLogic,
         address setTokenURILogic,
-        address burnLogic) 
-    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {
-        (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", metadataGetterLogic));
-        require(extendGetterSuccess, "failed to initialise metadata getter");
+        address mintLogic,
+        address burnLogic
+    ) public {
+        IExtendLogic self = IExtendLogic(address(this));
 
-        (bool extendTokenURISuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", setTokenURILogic));
-        require(extendTokenURISuccess, "failed to initialise setTokenURI logic");
-
-        (bool extendBurnSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", burnLogic));
-        require(extendBurnSuccess, "failed to initialise burn logic");
+        self.extend(metadataGetterLogic);
+        self.extend(setTokenURILogic);
+        self.extend(mintLogic);
+        self.extend(burnLogic);
     }
 }

@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
@@ -9,7 +8,7 @@ import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
-import "../approve/IApproveInternalLogic.sol";
+import "../approve/IApproveLogic.sol";
 import "../hooks/IBeforeTransferLogic.sol";
 import "./ITransferLogic.sol";
 import "../Events.sol";
@@ -102,18 +101,18 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         address to,
         uint256 tokenId
     ) internal virtual {
-        require(IGetterLogic(address(this)).ownerOf(tokenId) == from, "ERC721: transfer of token that is not own");
+        require(IGetterLogic(address(this)).ownerOf(tokenId) == from, "ERC721: transfer from incorrect owner");
         require(to != address(0), "ERC721: transfer to the zero address");
 
         IBeforeTransferLogic(address(this))._beforeTokenTransfer(from, to, tokenId);
 
         // Clear approvals from the previous owner
-        IApproveInternalLogic(address(this))._approve(address(0), tokenId);
+        IApproveLogic(address(this))._approve(address(0), tokenId);
 
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._balances[from] -= 1;
-        erc721Storage._balances[to] += 1;
-        erc721Storage._owners[tokenId] = to;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._balances[from] -= 1;
+        erc721State._balances[to] += 1;
+        erc721State._owners[tokenId] = to;
 
         emit Events.Transfer(from, to, tokenId);
     }

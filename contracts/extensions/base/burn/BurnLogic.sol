@@ -1,13 +1,12 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "hardhat/console.sol";
 import "../transfer/ITransferLogic.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
 import "../hooks/IBeforeTransferLogic.sol";
-import "../approve/IApproveInternalLogic.sol";
+import "../approve/ApproveLogic.sol";
 import "../Events.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -32,11 +31,11 @@ abstract contract BurnLogic is Extension, Events {
         IBeforeTransferLogic(address(this))._beforeTokenTransfer(owner, address(0), tokenId);
 
         // Clear approvals
-        IApproveInternalLogic(address(this))._approve(address(0), tokenId);
+        IApproveLogic(address(this))._approve(address(0), tokenId);
 
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._balances[owner] -= 1;
-        delete erc721Storage._owners[tokenId];
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._balances[owner] -= 1;
+        delete erc721State._owners[tokenId];
 
         emit Transfer(owner, address(0), tokenId);
     }

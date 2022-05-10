@@ -17,9 +17,9 @@ contract ERC721 is Extendable {
         address transferLogic,
         address beforeTransferLogic
     ) Extendable(extendLogic) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._name = name_;
-        erc721Storage._symbol = symbol_;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._name = name_;
+        erc721State._symbol = symbol_;
 
 
         (bool extendApproveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", approveLogic));

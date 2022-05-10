@@ -20,10 +20,10 @@ contract MetadataBurnLogic is IMetadataBurnLogic, BurnLogic {
      *
      * Emits a {Transfer} event.
      */
-    function burn(uint256 tokenId) override public {
+    function burn(uint256 tokenId) override virtual public {
         _burn(tokenId);
 
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
         if (bytes(state._tokenURIs[tokenId]).length != 0) {
             delete state._tokenURIs[tokenId];
         }
