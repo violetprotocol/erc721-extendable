@@ -20,6 +20,7 @@ import {
   MetadataBurnLogic,
   MetadataGetterLogic,
   SetTokenURILogic,
+  BasicSetTokenURILogic,
  } from "../src/types";
 import { Artifact } from "hardhat/types";
 import { Contract } from "ethers";
@@ -49,7 +50,7 @@ declare module "mocha" {
     enumerableBeforeTransfer: EnumerableBeforeTransferLogic;
     metadataBurn: MetadataBurnLogic;
     metadataGetter: MetadataGetterLogic;
-    setTokenUri: SetTokenURILogic;
+    setTokenUri: BasicSetTokenURILogic;
     redeploy: (module: MODULE) => void;
     redeployBase: () => void;
     redeployEnumerable: () => void;

@@ -129,7 +129,7 @@ const shouldBehaveLikeERC721Approve = (module: MODULE) => {
           tx = await this.tokenAsApprove.connect(this.signers.operator).approve(this.signers.approved.address, tokenId);
         });
 
-        it("", async function () {
+        it("successfully approves", async function () {
           itApproves(this.signers.approved.address);
           itEmitsApprovalEvent(this.signers.approved.address);
         })

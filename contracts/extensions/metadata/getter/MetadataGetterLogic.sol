@@ -55,9 +55,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
             return string(abi.encodePacked(base, _tokenURI));
         }
 
-        // See {ERC721-tokenURI}
-        string memory baseURI = _baseURI();
-        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
+        return bytes(_baseURI()).length > 0 ? string(abi.encodePacked(_baseURI(), tokenId.toString())) : "";
     }
 
     

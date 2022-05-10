@@ -11,5 +11,5 @@ describe("ERC721", function () {
         await this.redeployBase();
     })
 
-    // shouldBehaveLikeERC721(MODULE.BASE);
+    shouldBehaveLikeERC721(MODULE.BASE);
 });

@@ -22,6 +22,7 @@ import {
   MetadataBurnLogic,
   MetadataGetterLogic,
   SetTokenURILogic,
+  BasicSetTokenURILogic,
  } from "../src/types";
 
 const chai = require("chai");
@@ -74,7 +75,7 @@ before("setup", async function () {
 
     const metadataBurnArtifact = await artifacts.readArtifact("MetadataBurnLogic");
     const metadataGetterArtifact = await artifacts.readArtifact("MetadataGetterLogic");
-    const setTokenUriArtifact = await artifacts.readArtifact("SetTokenURILogic");
+    const setTokenUriArtifact = await artifacts.readArtifact("BasicSetTokenURILogic");
 
     this.artifacts = {
         extend: extendArtifact,
@@ -114,7 +115,7 @@ before("setup", async function () {
 
     this.metadataBurn = <MetadataBurnLogic>await waffle.deployContract(this.signers.admin, this.artifacts.metadataBurn);
     this.metadataGetter = <MetadataGetterLogic>await waffle.deployContract(this.signers.admin, this.artifacts.metadataGetter);
-    this.setTokenUri = <SetTokenURILogic>await waffle.deployContract(this.signers.admin, this.artifacts.setTokenUri);
+    this.setTokenUri = <BasicSetTokenURILogic>await waffle.deployContract(this.signers.admin, this.artifacts.setTokenUri);
 
     this.redeploy = async function (module: MODULE) {
         switch(module) {
@@ -178,7 +179,7 @@ before("setup", async function () {
         this.tokenAsBeforeTransfer = <BeforeTransferLogic>await this.erc721Metadata.as(this.artifacts.beforeTransfer);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Metadata.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721Metadata.as(this.artifacts.transfer);
-        this.tokenAsSetTokenURI = <SetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
+        this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
         this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721Metadata.as(this.artifacts.erc721MockExtension);
     }
 
@@ -203,7 +204,7 @@ before("setup", async function () {
         this.tokenAsBeforeTransfer = <EnumerableBeforeTransferLogic>await this.erc721Metadata.as(this.artifacts.enumerableBeforeTransfer);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Metadata.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721Metadata.as(this.artifacts.transfer);
-        this.tokenAsSetTokenURI = <SetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
+        this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
         this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721Metadata.as(this.artifacts.erc721MockExtension);
         this.tokenAsEnumerableGetter = <EnumerableGetterLogic>await this.erc721Metadata.as(this.artifacts.enumerableGetter);
     }
