@@ -18,7 +18,7 @@ contract EnumerableGetterLogic is IEnumerableGetterLogic, InternalExtension {
      */
     function tokenOfOwnerByIndex(address owner, uint256 index) override public virtual returns (uint256) {
         require(index < IGetterLogic(address(this)).balanceOf(owner), "ERC721Enumerable: owner index out of bounds");
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
         return state._ownedTokens[owner][index];
     }
 
@@ -26,7 +26,7 @@ contract EnumerableGetterLogic is IEnumerableGetterLogic, InternalExtension {
      * @dev See {IEnumerableGetterLogic-totalSupply}.
      */
     function totalSupply() override public virtual returns (uint256) {
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
         return state._allTokens.length;
     }
 
@@ -35,7 +35,7 @@ contract EnumerableGetterLogic is IEnumerableGetterLogic, InternalExtension {
      */
     function tokenByIndex(uint256 index) override public virtual returns (uint256) {
         require(index < totalSupply(), "ERC721Enumerable: global index out of bounds");
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
         return state._allTokens[index];
     }
 

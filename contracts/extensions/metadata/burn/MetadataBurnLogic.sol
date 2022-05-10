@@ -23,7 +23,7 @@ contract MetadataBurnLogic is IMetadataBurnLogic, BurnLogic {
     function burn(uint256 tokenId) override public {
         _burn(tokenId);
 
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
         if (bytes(state._tokenURIs[tokenId]).length != 0) {
             delete state._tokenURIs[tokenId];
         }

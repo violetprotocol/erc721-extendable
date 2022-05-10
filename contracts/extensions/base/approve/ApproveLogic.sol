@@ -44,8 +44,8 @@ contract ApproveLogic is IApproveLogic, InternalExtension {
         bool approved
     ) internal virtual {
         require(owner != operator, "ERC721: approve to caller");
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._operatorApprovals[owner][operator] = approved;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._operatorApprovals[owner][operator] = approved;
         emit ApprovalForAll(owner, operator, approved);
     }
 
@@ -55,8 +55,8 @@ contract ApproveLogic is IApproveLogic, InternalExtension {
      * Emits a {Approval} event.
      */
     function _approve(address to, uint256 tokenId) override public _internal virtual {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._tokenApprovals[tokenId] = to;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._tokenApprovals[tokenId] = to;
         emit Approval(IGetterLogic(address(this)).ownerOf(tokenId), to, tokenId);
     }
 

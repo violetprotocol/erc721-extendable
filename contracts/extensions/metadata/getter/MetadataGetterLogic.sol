@@ -17,16 +17,16 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
      * @dev See {IERC721Metadata-name}.
      */
     function name() override public virtual returns (string memory) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        return erc721Storage._name;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        return erc721State._name;
     }
 
     /**
      * @dev See {IERC721Metadata-symbol}.
      */
     function symbol() override public virtual returns (string memory) {
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        return erc721Storage._symbol;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        return erc721State._symbol;
     }
 
     /**
@@ -41,7 +41,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
         // See {IERC721URIStorage-tokenURI}
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI query for nonexistent token");
 
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
 
         string memory _tokenURI = state._tokenURIs[tokenId];
         string memory base = _baseURI();
@@ -74,7 +74,7 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
      * by default, can be overriden in child contracts.
      */
     function _baseURI() internal virtual returns (string memory) {
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
         return state.baseURI;
     }
 

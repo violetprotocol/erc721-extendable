@@ -18,14 +18,14 @@ struct ERC721EnumerableState {
 library ERC721EnumerableStorage {
     bytes32 constant STORAGE_NAME = keccak256("extendable:erc721:enumerable");
 
-    function _getStorage()
+    function _getState()
         internal 
         view
-        returns (ERC721EnumerableState storage erc721EnumberableStorage) 
+        returns (ERC721EnumerableState storage erc721EnumberableState) 
     {
         bytes32 position = keccak256(abi.encodePacked(address(this), STORAGE_NAME));
         assembly {
-            erc721EnumberableStorage.slot := position
+            erc721EnumberableState.slot := position
         }
     }
 }

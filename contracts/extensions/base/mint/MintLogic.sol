@@ -61,9 +61,9 @@ abstract contract MintLogic is Extension, Events {
 
         IBeforeTransferLogic(address(this))._beforeTokenTransfer(address(0), to, tokenId);
 
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._balances[to] += 1;
-        erc721Storage._owners[tokenId] = to;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._balances[to] += 1;
+        erc721State._owners[tokenId] = to;
 
         emit Transfer(address(0), to, tokenId);
     }

@@ -33,9 +33,9 @@ abstract contract BurnLogic is Extension, Events {
         // Clear approvals
         IApproveLogic(address(this))._approve(address(0), tokenId);
 
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._balances[owner] -= 1;
-        delete erc721Storage._owners[tokenId];
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._balances[owner] -= 1;
+        delete erc721State._owners[tokenId];
 
         emit Transfer(owner, address(0), tokenId);
     }

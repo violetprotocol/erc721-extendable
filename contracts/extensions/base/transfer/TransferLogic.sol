@@ -109,10 +109,10 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         // Clear approvals from the previous owner
         IApproveLogic(address(this))._approve(address(0), tokenId);
 
-        ERC721State storage erc721Storage = ERC721Storage._getStorage();
-        erc721Storage._balances[from] -= 1;
-        erc721Storage._balances[to] += 1;
-        erc721Storage._owners[tokenId] = to;
+        ERC721State storage erc721State = ERC721Storage._getState();
+        erc721State._balances[from] -= 1;
+        erc721State._balances[to] += 1;
+        erc721State._owners[tokenId] = to;
 
         emit Events.Transfer(from, to, tokenId);
     }

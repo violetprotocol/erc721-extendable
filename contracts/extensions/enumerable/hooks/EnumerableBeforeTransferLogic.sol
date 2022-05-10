@@ -47,7 +47,7 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
      */
     function _addTokenToOwnerEnumeration(address to, uint256 tokenId) private {
         uint256 length = IGetterLogic(address(this)).balanceOf(to);
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
         state._ownedTokens[to][length] = tokenId;
         state._ownedTokensIndex[tokenId] = length;
     }
@@ -57,7 +57,7 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
      * @param tokenId uint256 ID of the token to be added to the tokens list
      */
     function _addTokenToAllTokensEnumeration(uint256 tokenId) private {
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
         state._allTokensIndex[tokenId] = state._allTokens.length;
         state._allTokens.push(tokenId);
     }
@@ -73,7 +73,7 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
     function _removeTokenFromOwnerEnumeration(address from, uint256 tokenId) private {
         // To prevent a gap in from's tokens array, we store the last token in the index of the token to delete, and
         // then delete the last slot (swap and pop).
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
 
         uint256 lastTokenIndex = IGetterLogic(address(this)).balanceOf(from) - 1;
         uint256 tokenIndex = state._ownedTokensIndex[tokenId];
@@ -99,7 +99,7 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
     function _removeTokenFromAllTokensEnumeration(uint256 tokenId) private {
         // To prevent a gap in the tokens array, we store the last token in the index of the token to delete, and
         // then delete the last slot (swap and pop).
-        ERC721EnumerableState storage state = ERC721EnumerableStorage._getStorage();
+        ERC721EnumerableState storage state = ERC721EnumerableStorage._getState();
 
         uint256 lastTokenIndex = state._allTokens.length - 1;
         uint256 tokenIndex = state._allTokensIndex[tokenId];

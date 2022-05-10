@@ -13,14 +13,14 @@ contract SetTokenURILogic is ISetTokenURILogic, Extension {
     function setTokenURI(uint256 tokenId, string memory _tokenURI) override public virtual {
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
 
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
         state._tokenURIs[tokenId] = _tokenURI;
     }
     /**
      * @dev See {ISetTokenURILogic-_setBaseURI}.
      */
     function setBaseURI(string memory _baseURI) override public virtual {
-        TokenURIState storage state = TokenURIStorage._getStorage();
+        TokenURIState storage state = TokenURIStorage._getState();
         state.baseURI = _baseURI;
     }
 
