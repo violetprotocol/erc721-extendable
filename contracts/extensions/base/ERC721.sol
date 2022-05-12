@@ -5,9 +5,14 @@ import "@violetprotocol/extendable/extendable/Extendable.sol";
 import "@violetprotocol/extendable/extensions/extend/IExtendLogic.sol";
 import { ERC721State, ERC721Storage } from "../../storage/ERC721Storage.sol";
 
-// Functional logic extracted from openZeppelin:
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
-// To follow Extension principles, maybe best to separate each function into a different Extension
+/**
+ * @dev Core ERC721 Extendable contract
+ *
+ * Constructor arguments take usual `name` and `symbol` arguments for the token
+ * with additional extension addresses specifying where the functional logic
+ * for each of the token features live.
+ *
+ */
 contract ERC721 is Extendable {
     constructor(string memory name_, string memory symbol_, 
         address extendLogic,
@@ -17,11 +22,13 @@ contract ERC721 is Extendable {
         address transferLogic,
         address beforeTransferLogic
     ) Extendable(extendLogic) {
+        // Set the token name and symbol
         ERC721State storage erc721State = ERC721Storage._getState();
         erc721State._name = name_;
         erc721State._symbol = symbol_;
 
-
+        // Attempt to extend the contract with core functionality
+        // Must use low-level calls since contract has not yet been fully deployed
         (bool extendApproveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", approveLogic));
         require(extendApproveSuccess, "failed to initialise approve");
 

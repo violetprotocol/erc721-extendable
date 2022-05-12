@@ -3,7 +3,17 @@ pragma solidity ^0.8.4;
 
 import "../base/ERC721.sol";
 
-// TokenLogic Extension inherits from ERC721 to add mint function
+/**
+ * @dev ERC721Metadata Extendable contract
+ *
+ * Constructor arguments take usual `name` and `symbol` arguments for the token
+ * with additional extension addresses specifying where the functional logic
+ * for each of the token features live which is passed to the Base ERC721 contract
+ *
+ * Metadata-specific extensions must be extended immediately after deployment by
+ * calling the `finaliseERC721MetadataExtending` function.
+ *
+ */
 contract ERC721Metadata is ERC721 {
     constructor(string memory name_, string memory symbol_, 
         address extendLogic,
@@ -14,6 +24,12 @@ contract ERC721Metadata is ERC721 {
         address beforeTransferLogic) 
     ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {}
 
+    /**
+    * @dev Extends the contract with Metadata-specific functionalities
+    *
+    * Must be called immediately after contract deployment.
+    *
+    */
     function finaliseERC721MetadataExtending(
         address metadataGetterLogic,
         address setTokenURILogic,

@@ -4,6 +4,8 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
+// ReceiverMock extracted from openZeppelin:
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/mocks/ERC721ReceiverMock.sol
 contract ERC721ReceiverMock is IERC721Receiver {
     enum Error {
         None,

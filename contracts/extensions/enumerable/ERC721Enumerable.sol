@@ -3,8 +3,18 @@ pragma solidity ^0.8.4;
 
 import "../base/ERC721.sol";
 
-// Functional logic extracted from openZeppelin:
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol
+/**
+ * @dev ERC721Enumerable Extendable contract
+ *
+ * Constructor arguments take usual `name` and `symbol` arguments for the token
+ * with additional extension addresses specifying where the functional logic
+ * for each of the token features live which is passed to the Base ERC721 contract
+ *
+ * Enumerable requires:
+ * - `beforeTransferLogic` must be the EnumerableBeforeTransferLogic extension address
+ * - `enumerableGetterLogic` must be the EnumerableGetterLogic extension address
+ *
+ */
 contract ERC721Enumerable is ERC721 {
     constructor(string memory name_, string memory symbol_, 
         address extendLogic,
