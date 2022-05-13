@@ -29,19 +29,29 @@ contract ERC721 is Extendable {
 
         // Attempt to extend the contract with core functionality
         // Must use low-level calls since contract has not yet been fully deployed
-        (bool extendApproveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", approveLogic));
+        (bool extendApproveSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", approveLogic)
+        );
         require(extendApproveSuccess, "failed to initialise approve");
 
-        (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", getterLogic));
+        (bool extendGetterSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", getterLogic)
+        );
         require(extendGetterSuccess, "failed to initialise getter");
         
-        (bool extendOnReceiveSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", onReceiveLogic));
+        (bool extendOnReceiveSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", onReceiveLogic)
+        );
         require(extendOnReceiveSuccess, "failed to initialise onReceive");
 
-        (bool extendTransferSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", transferLogic));
+        (bool extendTransferSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", transferLogic)
+        );
         require(extendTransferSuccess, "failed to initialise transfer");
 
-        (bool extendBeforeTransferSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", beforeTransferLogic));
+        (bool extendBeforeTransferSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", beforeTransferLogic)
+        );
         require(extendBeforeTransferSuccess, "failed to initialise beforeTransfer");
 
     }

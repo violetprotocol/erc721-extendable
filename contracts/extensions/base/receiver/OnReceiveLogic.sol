@@ -54,6 +54,8 @@ contract OnReceiveLogic is IOnReceiveLogic, InternalExtension {
     }
 
     function getInterface() override virtual public pure returns(string memory) {
-        return "function _checkOnERC721Received(address from, address to, uint256 tokenId, bytes memory _data) external returns (bool);\n";
+        return  "function _checkOnERC721Received("
+                    "address from, address to, uint256 tokenId, bytes memory _data"
+                ") external returns (bool);\n";
     }
 }
