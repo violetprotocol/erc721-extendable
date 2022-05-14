@@ -7,18 +7,18 @@ Re-use and replace specific components of your ERC721 token contract using exten
 ## Usage
 
 ```bash
-npm install @violetprotocol/extendable-erc721
+npm install @violetprotocol/erc721extendable
 ```
 
 ```bash
-yarn add @violetprotocol/extendable-erc721
+yarn add @violetprotocol/erc721extendable
 ```
 
 ```solidity
-import "@violetprotocol/extendable-erc721/base/ERC721.sol"
-import "@violetprotocol/extendable-erc721/metadata/ERC721Metadata.sol"
-import "@violetprotocol/extendable-erc721/enumerable/ERC721Enumerable.sol"
-import "@violetprotocol/extendable-erc721/ERC721MetadataEnumerable.sol"
+import "@violetprotocol/erc721extendable/contracts/extensions/base/ERC721.sol"
+import "@violetprotocol/erc721extendable/contracts/extensions/metadata/ERC721Metadata.sol"
+import "@violetprotocol/erc721extendable/contracts/extensions/enumerable/ERC721Enumerable.sol"
+import "@violetprotocol/erc721extendable/contracts/extensions/ERC721MetadataEnumerable.sol"
 
 contract Token is ERC721 {}
 contract MetadataToken is ERC721Metadata {}
