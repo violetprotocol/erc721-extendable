@@ -4,6 +4,8 @@ import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
 
+import "./tasks";
+
 import { resolve } from "path";
 
 import { config as dotenvConfig } from "dotenv";
@@ -11,12 +13,6 @@ import { HardhatUserConfig } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
 
 dotenvConfig({ path: resolve(__dirname, "./.env") });
-
-// Ensure that we have all the environment variables we need.
-const mnemonic: string | undefined = process.env.MNEMONIC;
-if (!mnemonic) {
-  throw new Error("Please set your MNEMONIC in a .env file");
-}
 
 const infuraApiKey: string | undefined = process.env.INFURA_API_KEY;
 if (!infuraApiKey) {
@@ -38,11 +34,7 @@ const chainIds = {
 function getChainConfig(network: keyof typeof chainIds): NetworkUserConfig {
   const url: string = "https://" + network + ".infura.io/v3/" + infuraApiKey;
   return {
-    accounts: {
-      count: 20,
-      mnemonic,
-      path: "m/44'/60'/0'/0",
-    },
+    accounts: [`0x${process.env.PRIVATE_KEY}`],
     chainId: chainIds[network],
     url,
   };
@@ -56,11 +48,11 @@ const config: HardhatUserConfig = {
     excludeContracts: [],
     src: "./contracts",
   },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY
+  },
   networks: {
     hardhat: {
-      accounts: {
-        mnemonic,
-      },
       chainId: chainIds.hardhat,
     },
     arbitrumOne: getChainConfig("arbitrumOne"),

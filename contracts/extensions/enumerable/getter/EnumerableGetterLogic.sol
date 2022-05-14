@@ -10,7 +10,6 @@ import "../../base/getter/IGetterLogic.sol";
 import "./IEnumerableGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol
 contract EnumerableGetterLogic is IEnumerableGetterLogic, InternalExtension {
     /**

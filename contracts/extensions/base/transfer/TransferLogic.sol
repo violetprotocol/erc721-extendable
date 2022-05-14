@@ -53,7 +53,10 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         uint256 tokenId,
         bytes memory _data
     ) override public virtual {
-        require(IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId), "ERC721: transfer caller is not owner nor approved");
+        require(
+            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId), 
+            "ERC721: transfer caller is not owner nor approved"
+        );
         _safeTransfer(from, to, tokenId, _data);
     }
 
@@ -71,7 +74,8 @@ contract TransferLogic is ITransferLogic, Extension, Events {
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      * - `tokenId` token must exist and be owned by `from`.
-     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
+     * - If `to` refers to a smart contract, 
+     *      it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
@@ -82,7 +86,10 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         bytes memory _data
     ) internal virtual {
         _transfer(from, to, tokenId);
-        require(IOnReceiveLogic(address(this))._checkOnERC721Received(address(0), to, tokenId, _data), "ERC721: transfer to non ERC721Receiver implementer");
+        require(
+            IOnReceiveLogic(address(this))._checkOnERC721Received(address(0), to, tokenId, _data), 
+            "ERC721: transfer to non ERC721Receiver implementer"
+        );
     }
 
     /**
