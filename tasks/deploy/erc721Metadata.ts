@@ -5,30 +5,34 @@ import { ERC721Metadata } from "../../src/types";
 import { deploy } from "../helpers";
 
 task("deploy:ERC721Metadata")
+  .addParam("name", "Name to give your ERC721 token")
+  .addParam("symbol", "Symbol for your ERC721 token")
   .addParam("extend", "Extend Logic address")
   .addParam("approve", "Approve Logic address")
   .addParam("getter", "Base Getter Logic address")
-  .addParam("onReceive", "onReceive Logic address")
+  .addParam("onreceive", "onReceive Logic address")
   .addParam("transfer", "Transfer Logic address")
-  .addParam("beforeTransfer", "BeforeTransfer Logic address")
-  .addParam("metadataGetter", "Base Getter Logic address")
-  .addParam("setTokenURI", "onReceive Logic address")
+  .addParam("beforetransfer", "BeforeTransfer Logic address")
+  .addParam("metadatagetter", "Base Getter Logic address")
+  .addParam("settokenuri", "onReceive Logic address")
   .addParam("mint", "Mint Logic address")
   .addParam("burn", "MetadataBurn Logic address")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
-    const erc721 = <ERC721Metadata>await deploy(ethers, "ERC721", 
+    const erc721 = <ERC721Metadata>await deploy(ethers, "ERC721Metadata", 
+        taskArguments.name,
+        taskArguments.symbol,
         taskArguments.extend, 
         taskArguments.approve, 
         taskArguments.getter, 
-        taskArguments.onReceive, 
+        taskArguments.onreceive, 
         taskArguments.transfer,
-        taskArguments.beforeTransfer
+        taskArguments.beforetransfer
     );
     await erc721.finaliseERC721MetadataExtending(
-      taskArguments.metadataGetter, 
-      taskArguments.setTokenURI, 
+      taskArguments.metadatagetter, 
+      taskArguments.settokenuri, 
       taskArguments.mint, 
       taskArguments.burn
     );
-    console.log("ERC721 deployed to: ", erc721.address);
+    console.log("ERC721Metadata deployed to: ", erc721.address);
   });
