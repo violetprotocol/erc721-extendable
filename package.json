@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Extendable conversion of the ERC721 token standard",
   "main": "index.js",
+  "files": [
+    "contracts"
+  ],
   "scripts": {
     "clean": "shx rm -rf ./artifacts ./cache ./coverage ./src/types ./coverage.json",
     "commit": "git-cz",
