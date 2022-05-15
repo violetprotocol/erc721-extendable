@@ -21,6 +21,11 @@ import {
   MetadataGetterLogic,
   SetTokenURILogic,
   BasicSetTokenURILogic,
+  PermissionedBurnLogic,
+  PermissionedMintLogic,
+  PermissionedMetadataBurnLogic,
+  PermissionedSetTokenURILogic,
+  PermissionedERC721MockExtension,
  } from "../src/types";
 import { Artifact } from "hardhat/types";
 import { Contract } from "ethers";
@@ -39,23 +44,28 @@ declare module "mocha" {
     erc721Enumerable: Extended<ERC721Enumerable>;
     erc721Receiver: ERC721ReceiverMock;
     erc721MockExtension: ERC721MockExtension;
+    permissionedErc721MockExtension: PermissionedERC721MockExtension;
     approve: ApproveLogic;
     burn: BasicBurnLogic;
+    permissionedBurn: PermissionedBurnLogic;
     baseGetter: GetterLogic;
     beforeTransfer: BeforeTransferLogic;
     mint: BasicMintLogic;
+    permissionedMint: PermissionedMintLogic;
     onReceive: OnReceiveLogic;
     transfer: TransferLogic;
     enumerableGetter: EnumerableGetterLogic;
     enumerableBeforeTransfer: EnumerableBeforeTransferLogic;
     metadataBurn: MetadataBurnLogic;
+    permissionedMetadataBurn: PermissionedMetadataBurnLogic;
     metadataGetter: MetadataGetterLogic;
     setTokenUri: BasicSetTokenURILogic;
-    redeploy: (module: MODULE) => void;
-    redeployBase: () => void;
-    redeployEnumerable: () => void;
-    redeployMetadata: () => void;
-    redeployMetadataEnumerable: () => void;
+    permissionedSetTokenUri: PermissionedSetTokenURILogic;
+    redeploy: (module: MODULE, permissioned: boolean) => void;
+    redeployBase: (permissioned: boolean) => void;
+    redeployEnumerable: (permissioned: boolean) => void;
+    redeployMetadata: (permissioned: boolean) => void;
+    redeployMetadataEnumerable: (permissioned: boolean) => void;
     loadFixture: <T>(fixture: Fixture<T>) => Promise<T>;
     signers: Signers;
   }
@@ -81,18 +91,23 @@ export interface Artifacts {
   erc721Enumerable: Artifact;
   erc721Receiver: Artifact;
   erc721MockExtension: Artifact;
+  permissionedErc721MockExtension: Artifact;
   approve: Artifact;
   burn: Artifact;
+  permissionedBurn: Artifact;
   baseGetter: Artifact;
   beforeTransfer: Artifact;
   mint: Artifact;
+  permissionedMint: Artifact;
   onReceive: Artifact;
   transfer: Artifact;
   enumerableGetter: Artifact;
   enumerableBeforeTransfer: Artifact;
   metadataBurn: Artifact;
+  permissionedMetadataBurn: Artifact;
   metadataGetter: Artifact;
   setTokenUri: Artifact;
+  permissionedSetTokenUri: Artifact;
 }
 
 export type Extended<T extends Contract> = T & {

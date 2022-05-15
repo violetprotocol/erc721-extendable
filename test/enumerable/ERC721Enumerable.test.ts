@@ -7,9 +7,5 @@ const { solidity } = waffle;
 chai.use(solidity);
 
 describe("ERC721Enumerable", function () {
-    before("deploy new", async function () {
-        await this.redeployEnumerable();
-    });
-
     shouldBehaveLikeERC721Enumerable(MODULE.ENUMERABLE);
 });
