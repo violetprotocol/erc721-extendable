@@ -7,9 +7,5 @@ const { solidity } = waffle;
 chai.use(solidity);
 
 describe("ERC721Metadata", function () {
-    before("deploy new", async function () {
-        await this.redeployMetadata();
-    });
-
     shouldBehaveLikeERC721Metadata(MODULE.METADATA);
 });

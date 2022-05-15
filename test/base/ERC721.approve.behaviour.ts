@@ -10,11 +10,11 @@ const { ZERO_ADDRESS } = constants;
 const shouldBehaveLikeERC721Approve = (module: MODULE) => {
   context('approve with minted tokens', async function () {
     beforeEach(async function () {
-        await this.redeploy(module);
+        await this.redeploy(module, false);
         await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
         await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
         this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
-    });        
+    });
       
     describe('approve', function () {
       const tokenId = firstTokenId;
