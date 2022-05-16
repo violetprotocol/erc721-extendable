@@ -18,7 +18,7 @@ const { ZERO_ADDRESS } = constants;
 const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
     context('with minted tokens', async function () {
         before(async function () {
-            await this.redeploy(module);
+            await this.redeploy(module, false);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
             await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
             this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
@@ -31,7 +31,7 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
             let tx: ContractTransaction;
         
             beforeEach(async function () {
-                await this.redeploy(module);
+                await this.redeploy(module, false);
                 await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, tokenId);
                 await expect(this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, tokenId)).to.not.be.reverted;
                 await expect(this.tokenAsApprove.connect(this.signers.owner).setApprovalForAll(this.signers.operator.address, true)).to.not.be.reverted;
@@ -68,7 +68,7 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
         
             const shouldTransferTokensByUsers = async function (transferFunction: (tokenAsTransfer: TransferLogic, signer: SignerWithAddress, from: string, to: string, tokenId: BigNumber, opts?: any) => Promise<ContractTransaction | TransactionReceipt>) {
                 beforeEach(async function () {
-                    await this.redeploy(module);
+                    await this.redeploy(module, false);
                     await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
                     await expect(this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, firstTokenId)).to.not.be.reverted;
                     await expect(this.tokenAsApprove.connect(this.signers.owner).setApprovalForAll(this.signers.operator.address, true)).to.not.be.reverted;
@@ -105,7 +105,7 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
         
                 context('when sent to the owner', function () {
                     before(async function () {
-                        await this.redeploy(module);
+                        await this.redeploy(module, false);
                         await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
                         await expect(this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId)).to.not.be.reverted;
                         tx = <ContractTransaction><any>await transferFunction(this.tokenAsTransfer, this.signers.owner, this.signers.owner.address, this.signers.owner.address, firstTokenId);

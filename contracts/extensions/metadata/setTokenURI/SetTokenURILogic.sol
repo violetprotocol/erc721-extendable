@@ -6,6 +6,8 @@ import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIS
 import "./ISetTokenURILogic.sol";
 import "../../base/getter/IGetterLogic.sol";
 
+// This contract should be inherited by your own custom `setTokenURI` logic 
+// which makes a call to `_setTokenURI` or `_setBaseURI`
 contract SetTokenURILogic is ISetTokenURILogic, InternalExtension {
     /**
      * @dev See {ISetTokenURILogic-_setTokenURI}.
