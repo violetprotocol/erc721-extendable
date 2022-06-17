@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
+import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
@@ -26,9 +26,12 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         address from,
         address to,
         uint256 tokenId
-    ) override public virtual {
+    ) public virtual override {
         //solhint-disable-next-line max-line-length
-        require(IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId), "ERC721: transfer caller is not owner nor approved");
+        require(
+            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId),
+            "ERC721: transfer caller is not owner nor approved"
+        );
 
         _transfer(from, to, tokenId);
     }
@@ -40,7 +43,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         address from,
         address to,
         uint256 tokenId
-    ) override public virtual {
+    ) public virtual override {
         safeTransferFrom(from, to, tokenId, "");
     }
 
@@ -52,9 +55,9 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         address to,
         uint256 tokenId,
         bytes memory _data
-    ) override public virtual {
+    ) public virtual override {
         require(
-            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId), 
+            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId),
             "ERC721: transfer caller is not owner nor approved"
         );
         _safeTransfer(from, to, tokenId, _data);
@@ -74,7 +77,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      * - `tokenId` token must exist and be owned by `from`.
-     * - If `to` refers to a smart contract, 
+     * - If `to` refers to a smart contract,
      *      it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
@@ -87,7 +90,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
     ) internal virtual {
         _transfer(from, to, tokenId);
         require(
-            IOnReceiveLogic(address(this))._checkOnERC721Received(address(0), to, tokenId, _data), 
+            IOnReceiveLogic(address(this))._checkOnERC721Received(from, to, tokenId, _data),
             "ERC721: transfer to non ERC721Receiver implementer"
         );
     }
@@ -124,13 +127,14 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         emit Events.Transfer(from, to, tokenId);
     }
 
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(ITransferLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(ITransferLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
-        return  "function transferFrom(address from, address to, uint256 tokenId) external;\n"
-                "function safeTransferFrom(address from, address to, uint256 tokenId) external;\n"
-                "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) external;\n";
+    function getInterface() public pure virtual override returns (string memory) {
+        return
+            "function transferFrom(address from, address to, uint256 tokenId) external;\n"
+            "function safeTransferFrom(address from, address to, uint256 tokenId) external;\n"
+            "function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) external;\n";
     }
 }
