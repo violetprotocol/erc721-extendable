@@ -27,11 +27,13 @@ contract OnReceiveLogic is IOnReceiveLogic, InternalExtension {
         address to,
         uint256 tokenId,
         bytes memory _data
-    ) override public _internal returns (bool) {
+    ) public override _internal returns (bool) {
         string memory notReceiver = "ERC721: transfer to non ERC721Receiver implementer";
-        
+
         if (to.isContract()) {
-            try IERC721Receiver(to).onERC721Received(msg.sender, from, tokenId, _data) returns (bytes4 retval) {
+            try IERC721Receiver(to).onERC721Received(_lastExternalCaller(), from, tokenId, _data) returns (
+                bytes4 retval
+            ) {
                 return retval == IERC721Receiver.onERC721Received.selector;
             } catch (bytes memory reason) {
                 if (reason.length == 0) {
@@ -49,13 +51,14 @@ contract OnReceiveLogic is IOnReceiveLogic, InternalExtension {
         }
     }
 
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IOnReceiveLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(IOnReceiveLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
-        return  "function _checkOnERC721Received("
-                    "address from, address to, uint256 tokenId, bytes memory _data"
-                ") external returns (bool);\n";
+    function getInterface() public pure virtual override returns (string memory) {
+        return
+            "function _checkOnERC721Received("
+            "address from, address to, uint256 tokenId, bytes memory _data"
+            ") external returns (bool);\n";
     }
 }
