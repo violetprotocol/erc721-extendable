@@ -5,7 +5,7 @@ import "@violetprotocol/extendable/extensions/Extension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
-import "../hooks/IBeforeTransferLogic.sol";
+import "../hooks/IERC721Hooks.sol";
 import "../Events.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -60,12 +60,14 @@ abstract contract MintLogic is Extension, Events {
         require(to != address(0), "ERC721: mint to the zero address");
         require(!IGetterLogic(address(this))._exists(tokenId), "ERC721: token already minted");
 
-        IBeforeTransferLogic(address(this))._beforeTokenTransfer(address(0), to, tokenId);
+        IERC721Hooks(address(this))._beforeTokenTransfer(address(0), to, tokenId);
 
         ERC721State storage erc721State = ERC721Storage._getState();
         erc721State._balances[to] += 1;
         erc721State._owners[tokenId] = to;
 
         emit Transfer(address(0), to, tokenId);
+
+        IERC721Hooks(address(this))._afterTokenTransfer(address(0), to, tokenId);
     }
 }

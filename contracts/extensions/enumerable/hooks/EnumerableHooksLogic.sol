@@ -2,12 +2,12 @@
 pragma solidity ^0.8.4;
 
 import { ERC721EnumerableState, ERC721EnumerableStorage } from "../../../storage/ERC721EnumerableStorage.sol";
-import "../../base/hooks/BeforeTransferLogic.sol";
+import "../../base/hooks/ERC721HooksLogic.sol";
 import "../../base/getter/IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol
-contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
+contract EnumerableHooksLogic is ERC721HooksLogic {
     /**
      * @dev Hook that is called before any token transfer. This includes minting
      * and burning.
@@ -27,7 +27,7 @@ contract EnumerableBeforeTransferLogic is BeforeTransferLogic {
         address from,
         address to,
         uint256 tokenId
-    ) override(BeforeTransferLogic) public _internal virtual {
+    ) override(ERC721HooksLogic) public _internal virtual {
         if (from == address(0)) {
             _addTokenToAllTokensEnumeration(tokenId);
         } else if (from != to) {

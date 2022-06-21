@@ -21,8 +21,8 @@ contract ERC721Metadata is ERC721 {
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
-        address beforeTransferLogic) 
-    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {}
+        address hooksLogic) 
+    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {}
 
     /**
     * @dev Extends the contract with Metadata-specific functionalities

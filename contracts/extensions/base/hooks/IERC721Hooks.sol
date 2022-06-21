@@ -1,10 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@violetprotocol/extendable/extensions/InternalExtension.sol";
-import "./IBeforeTransferLogic.sol";
-
-contract BeforeTransferLogic is IBeforeTransferLogic, InternalExtension {
+interface IERC721Hooks {
     /**
      * @dev Hook that is called before any token transfer. This includes minting
      * and burning.
@@ -24,13 +21,22 @@ contract BeforeTransferLogic is IBeforeTransferLogic, InternalExtension {
         address from,
         address to,
         uint256 tokenId
-    ) override public _internal virtual {}
+    ) external;
 
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IBeforeTransferLogic).interfaceId);
-    }
-
-    function getInterface() override virtual public pure returns(string memory) {
-        return  "function _beforeTokenTransfer(address from, address to, uint256 tokenId) external;\n";
-    }
+    /**
+     * @dev Hook that is called after any transfer of tokens. This includes
+     * minting and burning.
+     *
+     * Calling conditions:
+     *
+     * - when `from` and `to` are both non-zero.
+     * - `from` and `to` are never both zero.
+     *
+     * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
+     */
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) external;
 }

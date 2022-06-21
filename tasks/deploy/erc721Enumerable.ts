@@ -11,7 +11,7 @@ task("deploy:ERC721Enumerable")
   .addParam("getter", "Base Getter Logic address")
   .addParam("onreceive", "onReceive Logic address")
   .addParam("transfer", "Transfer Logic address")
-  .addParam("beforetransfer", "BeforeTransfer Logic address")
+  .addParam("hooks", "EnumerableHooks Logic address")
   .addParam("enumerablegetter", "EnumerableGetter Logic address")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
     const erc721 = await deploy(ethers, "ERC721Enumerable", 
@@ -22,7 +22,7 @@ task("deploy:ERC721Enumerable")
         taskArguments.getter, 
         taskArguments.onreceive, 
         taskArguments.transfer,
-        taskArguments.beforetransfer,
+        taskArguments.hooks,
         taskArguments.enumerablegetter
     );
     console.log("ERC721Enumerable deployed to: ", erc721.address);

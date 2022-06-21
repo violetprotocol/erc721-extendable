@@ -11,7 +11,7 @@ import "../base/ERC721.sol";
  * for each of the token features live which is passed to the Base ERC721 contract
  *
  * Enumerable requires:
- * - `beforeTransferLogic` must be the EnumerableBeforeTransferLogic extension address
+ * - `hooksLogic` must be the EnumerableHooksLogic extension address
  * - `enumerableGetterLogic` must be the EnumerableGetterLogic extension address
  *
  */
@@ -22,9 +22,9 @@ contract ERC721Enumerable is ERC721 {
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
-        address beforeTransferLogic,
+        address hooksLogic,
         address enumerableGetterLogic) 
-    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, beforeTransferLogic) {
+    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {
         (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", enumerableGetterLogic));
         require(extendGetterSuccess, "failed to initialise enumerable getter");
     }

@@ -11,15 +11,14 @@ import {
   ApproveLogic,
   BasicBurnLogic,
   GetterLogic,
-  BeforeTransferLogic,
+  ERC721HooksLogic,
   BasicMintLogic,
   OnReceiveLogic,
   TransferLogic,
   EnumerableGetterLogic,
-  EnumerableBeforeTransferLogic,
+  EnumerableHooksLogic,
   MetadataBurnLogic,
   MetadataGetterLogic,
-  SetTokenURILogic,
   BasicSetTokenURILogic,
   PermissionedBurnLogic,
   PermissionedMintLogic,
@@ -49,13 +48,13 @@ declare module "mocha" {
     burn: BasicBurnLogic;
     permissionedBurn: PermissionedBurnLogic;
     baseGetter: GetterLogic;
-    beforeTransfer: BeforeTransferLogic;
+    hooks: ERC721HooksLogic;
     mint: BasicMintLogic;
     permissionedMint: PermissionedMintLogic;
     onReceive: OnReceiveLogic;
     transfer: TransferLogic;
     enumerableGetter: EnumerableGetterLogic;
-    enumerableBeforeTransfer: EnumerableBeforeTransferLogic;
+    enumerableHooks: EnumerableHooksLogic;
     metadataBurn: MetadataBurnLogic;
     permissionedMetadataBurn: PermissionedMetadataBurnLogic;
     metadataGetter: MetadataGetterLogic;
@@ -96,13 +95,13 @@ export interface Artifacts {
   burn: Artifact;
   permissionedBurn: Artifact;
   baseGetter: Artifact;
-  beforeTransfer: Artifact;
+  hooks: Artifact;
   mint: Artifact;
   permissionedMint: Artifact;
   onReceive: Artifact;
   transfer: Artifact;
   enumerableGetter: Artifact;
-  enumerableBeforeTransfer: Artifact;
+  enumerableHooks: Artifact;
   metadataBurn: Artifact;
   permissionedMetadataBurn: Artifact;
   metadataGetter: Artifact;

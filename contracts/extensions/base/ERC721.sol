@@ -20,7 +20,7 @@ contract ERC721 is Extendable {
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
-        address beforeTransferLogic
+        address hooksLogic
     ) Extendable(extendLogic) {
         // Set the token name and symbol
         ERC721State storage erc721State = ERC721Storage._getState();
@@ -49,10 +49,10 @@ contract ERC721 is Extendable {
         );
         require(extendTransferSuccess, "failed to initialise transfer");
 
-        (bool extendBeforeTransferSuccess, ) = extendLogic.delegatecall(
-            abi.encodeWithSignature("extend(address)", beforeTransferLogic)
+        (bool extendHooksSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", hooksLogic)
         );
-        require(extendBeforeTransferSuccess, "failed to initialise beforeTransfer");
+        require(extendHooksSuccess, "failed to initialise hooks");
 
     }
 }

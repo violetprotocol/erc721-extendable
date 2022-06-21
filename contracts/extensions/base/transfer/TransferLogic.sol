@@ -9,7 +9,7 @@ import { RoleState, Permissions } from "@violetprotocol/extendable/storage/Permi
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
 import "../approve/IApproveLogic.sol";
-import "../hooks/IBeforeTransferLogic.sol";
+import "../hooks/IERC721Hooks.sol";
 import "./ITransferLogic.sol";
 import "../Events.sol";
 
@@ -114,7 +114,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         require(IGetterLogic(address(this)).ownerOf(tokenId) == from, "ERC721: transfer from incorrect owner");
         require(to != address(0), "ERC721: transfer to the zero address");
 
-        IBeforeTransferLogic(address(this))._beforeTokenTransfer(from, to, tokenId);
+        IERC721Hooks(address(this))._beforeTokenTransfer(from, to, tokenId);
 
         // Clear approvals from the previous owner
         IApproveLogic(address(this))._approve(address(0), tokenId);
@@ -125,6 +125,8 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         erc721State._owners[tokenId] = to;
 
         emit Events.Transfer(from, to, tokenId);
+
+        IERC721Hooks(address(this))._afterTokenTransfer(from, to, tokenId);
     }
 
     function getInterfaceId() public pure virtual override returns (bytes4) {
