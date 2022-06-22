@@ -29,7 +29,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
     ) public virtual override {
         //solhint-disable-next-line max-line-length
         require(
-            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId),
+            IGetterLogic(address(this))._isApprovedOrOwner(_lastExternalCaller(), tokenId),
             "ERC721: transfer caller is not owner nor approved"
         );
 
@@ -57,7 +57,7 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         bytes memory _data
     ) public virtual override {
         require(
-            IGetterLogic(address(this))._isApprovedOrOwner(msg.sender, tokenId),
+            IGetterLogic(address(this))._isApprovedOrOwner(_lastExternalCaller(), tokenId),
             "ERC721: transfer caller is not owner nor approved"
         );
         _safeTransfer(from, to, tokenId, _data);
