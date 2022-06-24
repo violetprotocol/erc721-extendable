@@ -15,7 +15,7 @@ interface IERC721Hooks {
      * - `from` cannot be the zero address.
      * - `to` cannot be the zero address.
      *
-     * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
+     * To learn more about hooks, head to https://docs.openzeppelin.com/contracts/3.x/extending-contracts#using-hooks.
      */
     function _beforeTokenTransfer(
         address from,
@@ -32,7 +32,7 @@ interface IERC721Hooks {
      * - when `from` and `to` are both non-zero.
      * - `from` and `to` are never both zero.
      *
-     * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
+     * To learn more about hooks, head to https://docs.openzeppelin.com/contracts/3.x/extending-contracts#using-hooks.
      */
     function _afterTokenTransfer(
         address from,

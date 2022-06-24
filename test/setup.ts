@@ -162,7 +162,6 @@ before("setup", async function () {
         this.tokenAsApprove = <ApproveLogic>await this.erc721.as(this.artifacts.approve);
         this.tokenAsBurn = <BasicBurnLogic>await this.erc721.as(this.artifacts.burn);
         this.tokenAsBaseGetter = <GetterLogic>await this.erc721.as(this.artifacts.baseGetter);
-        this.tokenAsHooks = <ERC721HooksLogic>await this.erc721.as(this.artifacts.hooks);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721.as(this.artifacts.transfer);
         this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721.as(this.artifacts.erc721MockExtension);
@@ -177,7 +176,6 @@ before("setup", async function () {
         this.tokenAsBurn = <BasicBurnLogic>await this.erc721Enumerable.as(this.artifacts.burn);
         this.tokenAsBaseGetter = <GetterLogic>await this.erc721Enumerable.as(this.artifacts.baseGetter);
         this.tokenAsEnumerableGetter = <EnumerableGetterLogic>await this.erc721Enumerable.as(this.artifacts.enumerableGetter);
-        this.tokenAsEnumerableHooks = <EnumerableHooksLogic>await this.erc721Enumerable.as(this.artifacts.enumerableHooks);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Enumerable.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721Enumerable.as(this.artifacts.transfer);
         this.tokenAsErc721MockExtension = <ERC721MockExtension>await this.erc721Enumerable.as(this.artifacts.erc721MockExtension);
@@ -201,7 +199,6 @@ before("setup", async function () {
         this.tokenAsBurn = <MetadataBurnLogic>await this.erc721Metadata.as(this.artifacts.metadataBurn);
         this.tokenAsBaseGetter = <GetterLogic>await this.erc721Metadata.as(this.artifacts.baseGetter);
         this.tokenAsMetadataGetter = <MetadataGetterLogic>await this.erc721Metadata.as(this.artifacts.metadataGetter);
-        this.tokenAsHooks = <ERC721HooksLogic>await this.erc721Metadata.as(this.artifacts.hooks);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Metadata.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721Metadata.as(this.artifacts.transfer);
         this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
@@ -232,7 +229,6 @@ before("setup", async function () {
         this.tokenAsBurn = <MetadataBurnLogic>await this.erc721Metadata.as(this.artifacts.metadataBurn);
         this.tokenAsBaseGetter = <GetterLogic>await this.erc721Metadata.as(this.artifacts.baseGetter);
         this.tokenAsMetadataGetter = <MetadataGetterLogic>await this.erc721Metadata.as(this.artifacts.metadataGetter);
-        this.tokenAsHooks = <EnumerableHooksLogic>await this.erc721Metadata.as(this.artifacts.enumerableHooks);
         this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Metadata.as(this.artifacts.onReceive);
         this.tokenAsTransfer = <TransferLogic>await this.erc721Metadata.as(this.artifacts.transfer);
         this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
