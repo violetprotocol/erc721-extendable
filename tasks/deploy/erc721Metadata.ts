@@ -12,7 +12,7 @@ task("deploy:ERC721Metadata")
   .addParam("getter", "Base Getter Logic address")
   .addParam("onreceive", "onReceive Logic address")
   .addParam("transfer", "Transfer Logic address")
-  .addParam("beforetransfer", "BeforeTransfer Logic address")
+  .addParam("hooks", "Hooks Logic address")
   .addParam("metadatagetter", "Base Getter Logic address")
   .addParam("settokenuri", "onReceive Logic address")
   .addParam("mint", "Mint Logic address")
@@ -26,7 +26,7 @@ task("deploy:ERC721Metadata")
         taskArguments.getter, 
         taskArguments.onreceive, 
         taskArguments.transfer,
-        taskArguments.beforetransfer
+        taskArguments.hooks
     );
     await erc721.finaliseERC721MetadataExtending(
       taskArguments.metadatagetter, 
