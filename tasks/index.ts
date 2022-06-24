@@ -6,5 +6,15 @@ const deployEnumerable = require("./deploy/erc721Enumerable");
 
 const extend = require("./extend");
 const accounts = require("./accounts");
+const mint = require("./mint")
 
-export { accounts, deployExtendable, deployExtension, extend, deployBase, deployMetadata, deployEnumerable };
+export { 
+    accounts, 
+    deployExtendable, 
+    deployExtension, 
+    extend, 
+    deployBase, 
+    deployMetadata, 
+    deployEnumerable,
+    mint
+};
