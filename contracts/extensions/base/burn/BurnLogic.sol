@@ -5,7 +5,7 @@ import "../transfer/ITransferLogic.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
 import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
-import "../hooks/IBeforeTransferLogic.sol";
+import "../hooks/IERC721Hooks.sol";
 import "../approve/ApproveLogic.sol";
 import "../Events.sol";
 
@@ -28,7 +28,7 @@ abstract contract BurnLogic is Extension, Events {
     function _burn(uint256 tokenId) internal virtual {
         address owner = IGetterLogic(address(this)).ownerOf(tokenId);
 
-        IBeforeTransferLogic(address(this))._beforeTokenTransfer(owner, address(0), tokenId);
+        IERC721Hooks(address(this))._beforeTokenTransfer(owner, address(0), tokenId);
 
         // Clear approvals
         IApproveLogic(address(this))._approve(address(0), tokenId);
@@ -38,5 +38,7 @@ abstract contract BurnLogic is Extension, Events {
         delete erc721State._owners[tokenId];
 
         emit Transfer(owner, address(0), tokenId);
+
+        IERC721Hooks(address(this))._afterTokenTransfer(owner, address(0), tokenId);
     }
 }

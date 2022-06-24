@@ -64,7 +64,7 @@ Each top level contract implementation is an Extendable contract extended with n
 
 `GetterLogic.sol` - contains all view-functions for reading state from the contract.
 
-`BeforeTransferLogic.sol` - contains the `_beforeTokenTransfer` hook.
+`ERC721HooksLogic.sol` - contains the `_beforeTokenTransfer` and `_afterTokenTransfer` hooks.
 
 `OnReceiveLogic.sol` - contains the logic for checking token receive by contracts.
 
@@ -87,7 +87,7 @@ Each top level contract implementation is an Extendable contract extended with n
 #### ERC721Enumerable
 
 `EnumerableGetterLogic` - contains all enumerable-related view-functions for reading enumerable token state.
-`EnumerableBeforeTransferLogic` - contains an inherited implementation of the `_beforeTokenTransfer` hook for enumerable tokens.
+`EnumerableHooksLogic` - contains an overridden implementation of the `_beforeTokenTransfer` hook for enumerable tokens.
 
 ### Storage
 

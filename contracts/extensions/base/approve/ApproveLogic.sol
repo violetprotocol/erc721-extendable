@@ -13,12 +13,13 @@ contract ApproveLogic is IApproveLogic, InternalExtension {
     /**
      * @dev See {IERC721-approve}.
      */
-    function approve(address to, uint256 tokenId) override public virtual {
+    function approve(address to, uint256 tokenId) public virtual override {
         address owner = IGetterLogic(address(this)).ownerOf(tokenId);
         require(to != owner, "ERC721: approval to current owner");
 
         require(
-            msg.sender == owner || IGetterLogic(address(this)).isApprovedForAll(owner, msg.sender),
+            _lastExternalCaller() == owner ||
+                IGetterLogic(address(this)).isApprovedForAll(owner, _lastExternalCaller()),
             "ERC721: approve caller is not owner nor approved for all"
         );
 
@@ -30,7 +31,7 @@ contract ApproveLogic is IApproveLogic, InternalExtension {
      * @dev See {IERC721-setApprovalForAll}.
      */
     function setApprovalForAll(address operator, bool approved) public virtual override {
-        _setApprovalForAll(msg.sender, operator, approved);
+        _setApprovalForAll(_lastExternalCaller(), operator, approved);
     }
 
     /**
@@ -54,19 +55,20 @@ contract ApproveLogic is IApproveLogic, InternalExtension {
      *
      * Emits a {Approval} event.
      */
-    function _approve(address to, uint256 tokenId) override public _internal virtual {
+    function _approve(address to, uint256 tokenId) public virtual override _internal {
         ERC721State storage erc721State = ERC721Storage._getState();
         erc721State._tokenApprovals[tokenId] = to;
         emit Approval(IGetterLogic(address(this)).ownerOf(tokenId), to, tokenId);
     }
 
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IApproveLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(IApproveLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
-        return  "function approve(address to, uint256 tokenId) external;\n"
-                "function setApprovalForAll(address operator, bool approved) external;\n"
-                "function _approve(address to, uint256 tokenId) external;\n";
+    function getInterface() public pure virtual override returns (string memory) {
+        return
+            "function approve(address to, uint256 tokenId) external;\n"
+            "function setApprovalForAll(address operator, bool approved) external;\n"
+            "function _approve(address to, uint256 tokenId) external;\n";
     }
 }
