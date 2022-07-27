@@ -10,12 +10,10 @@ import "./BasicSetTokenURILogic.sol";
  * Uses PermissioningLogic to restrict `setTokenURI` caller to only `owner` or the current contract
  */
 contract PermissionedSetTokenURILogic is BasicSetTokenURILogic {
-    modifier onlyOwnerOrSelf virtual {
+    modifier onlyOwnerOrSelf() virtual {
         RoleState storage state = Permissions._getStorage();
         require(
-            _lastExternalCaller() == state.owner || 
-            msg.sender == state.owner || 
-            msg.sender == address(this), 
+            _lastExternalCaller() == state.owner || msg.sender == state.owner || msg.sender == address(this),
             "SetTokenURI: unauthorised"
         );
         _;
@@ -24,13 +22,14 @@ contract PermissionedSetTokenURILogic is BasicSetTokenURILogic {
     /**
      * @dev See {ISetTokenURILogic-_setTokenURI}.
      */
-    function setTokenURI(uint256 tokenId, string memory _tokenURI) override public virtual onlyOwnerOrSelf {
+    function setTokenURI(uint256 tokenId, string memory _tokenURI) public virtual override onlyOwnerOrSelf {
         super.setTokenURI(tokenId, _tokenURI);
     }
+
     /**
      * @dev See {ISetTokenURILogic-_setBaseURI}.
      */
-    function setBaseURI(string memory _baseURI) override public virtual onlyOwnerOrSelf {
+    function setBaseURI(string memory _baseURI) public virtual override onlyOwnerOrSelf {
         super.setBaseURI(_baseURI);
     }
 }

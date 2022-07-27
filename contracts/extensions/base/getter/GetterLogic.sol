@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/InternalExtension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
+import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import "./IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
@@ -46,7 +46,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IERC721-isApprovedForAll}.
      */
-    function isApprovedForAll(address owner, address operator) override public view virtual returns (bool) {
+    function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {
         ERC721State storage erc721State = ERC721Storage._getState();
         return erc721State._operatorApprovals[owner][operator];
     }
@@ -54,7 +54,7 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IGetterLogic-_exists}.
      */
-    function _exists(uint256 tokenId) override public _internal returns (bool) {
+    function _exists(uint256 tokenId) public override _internal returns (bool) {
         ERC721State storage erc721State = ERC721Storage._getState();
         return erc721State._owners[tokenId] != address(0);
     }
@@ -62,23 +62,23 @@ contract GetterLogic is IGetterLogic, InternalExtension {
     /**
      * @dev See {IGetterLogic-_isApprovedOrOwner}.
      */
-    function _isApprovedOrOwner(address spender, uint256 tokenId) override public _internal virtual returns (bool) {
+    function _isApprovedOrOwner(address spender, uint256 tokenId) public virtual override _internal returns (bool) {
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721: operator query for nonexistent token");
         address owner = ownerOf(tokenId);
         return (spender == owner || spender == getApproved(tokenId) || isApprovedForAll(owner, spender));
     }
 
-
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IGetterLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(IGetterLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
-        return  "function balanceOf(address owner) external view returns (uint256);\n"
-                "function ownerOf(uint256 tokenId) external view returns (address);\n"
-                "function getApproved(uint256 tokenId) external view returns (address);\n"
-                "function isApprovedForAll(address owner, address operator) external view returns (bool);\n"
-                "function _exists(uint256 tokenId) external view returns (bool);\n"
-                "function _isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool);\n";
+    function getInterface() public pure virtual override returns (string memory) {
+        return
+            "function balanceOf(address owner) external view returns (uint256);\n"
+            "function ownerOf(uint256 tokenId) external view returns (address);\n"
+            "function getApproved(uint256 tokenId) external view returns (address);\n"
+            "function isApprovedForAll(address owner, address operator) external view returns (bool);\n"
+            "function _exists(uint256 tokenId) external view returns (bool);\n"
+            "function _isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool);\n";
     }
 }

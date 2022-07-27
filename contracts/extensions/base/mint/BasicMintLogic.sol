@@ -15,20 +15,20 @@ contract BasicMintLogic is IBasicMintLogic, MintLogic {
      * Requirements:
      *
      * - `tokenId` must not exist.
-     * - If `to` refers to a smart contract, 
+     * - If `to` refers to a smart contract,
      *      it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.
      */
-    function mint(address to, uint256 tokenId) override virtual public {
+    function mint(address to, uint256 tokenId) public virtual override {
         _safeMint(to, tokenId);
     }
 
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IBasicMintLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(IBasicMintLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
+    function getInterface() public pure virtual override returns (string memory) {
         return "function mint(address to, uint256 amount) external;\n";
     }
 }
