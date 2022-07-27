@@ -1,6 +1,6 @@
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import type { Fixture } from "ethereum-waffle";
-import { 
+import {
   ExtendLogic,
   PermissioningLogic,
   ERC721,
@@ -25,7 +25,7 @@ import {
   PermissionedMetadataBurnLogic,
   PermissionedSetTokenURILogic,
   PermissionedERC721MockExtension,
- } from "../src/types";
+} from "../src/types";
 import { Artifact } from "hardhat/types";
 import { Contract } from "ethers";
 import { waffle, ethers } from "hardhat";
@@ -113,20 +113,27 @@ export type Extended<T extends Contract> = T & {
   as<T>(artifact: Artifact): T;
 };
 
-export const deployExtendableContract = async <T extends Contract>(deployer: SignerWithAddress, artifact: Artifact, params: any[]): Promise<Extended<T>> => {
+export const deployExtendableContract = async <T extends Contract>(
+  deployer: SignerWithAddress,
+  artifact: Artifact,
+  params: any[],
+): Promise<Extended<T>> => {
   const contract = <Extended<T>>await waffle.deployContract(deployer, artifact, [...params]);
   contract.as = <T>(artifact: Artifact) => {
-    return <T><unknown>ethers.getContractAtFromArtifact(artifact, contract.address);
-  }
+    return <T>(<unknown>ethers.getContractAtFromArtifact(artifact, contract.address));
+  };
 
   return contract;
-}
+};
 
-export const attachExtendableContract = async <T extends Contract>(artifact: Artifact, address: string): Promise<Extended<T>> => {
+export const attachExtendableContract = async <T extends Contract>(
+  artifact: Artifact,
+  address: string,
+): Promise<Extended<T>> => {
   const contract = <Extended<T>>await ethers.getContractAtFromArtifact(artifact, address);
   contract.as = <T>(artifact: Artifact) => {
-    return <T><unknown>ethers.getContractAtFromArtifact(artifact, contract.address);
-  }
+    return <T>(<unknown>ethers.getContractAtFromArtifact(artifact, contract.address));
+  };
 
   return contract;
-}
+};
