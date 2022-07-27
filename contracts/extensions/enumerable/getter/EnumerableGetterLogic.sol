@@ -10,6 +10,7 @@ import "../../base/getter/IGetterLogic.sol";
 import "./IEnumerableGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
+// solhint-disable-next-line max-line-length
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol
 contract EnumerableGetterLogic is IEnumerableGetterLogic, InternalExtension {
     /**
