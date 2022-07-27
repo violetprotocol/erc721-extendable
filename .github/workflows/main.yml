@@ -3,7 +3,7 @@ name: "CI/CD for main"
 env:
   INFURA_API_KEY: ${{ secrets.INFURA_KEY_FOR_CI_CD }}
   MNEMONIC: ${{ secrets.MNEMONIC_FOR_CI_CD }}
-  PRIVATE_KEY: ${{ ETH_PRIVATE_KEY_FOR_CI_CD }}
+  PRIVATE_KEY: ${{ secrets.ETH_PRIVATE_KEY_FOR_CI_CD }}
 
 on:
   pull_request:
