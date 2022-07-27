@@ -10,18 +10,16 @@ import "./BasicMintLogic.sol";
  * Uses PermissioningLogic to restrict `mint` caller to only `owner` or the current contract
  */
 contract PermissionedMintLogic is BasicMintLogic {
-    modifier onlyOwnerOrSelf virtual {
+    modifier onlyOwnerOrSelf() virtual {
         RoleState storage state = Permissions._getStorage();
         require(
-            _lastExternalCaller() == state.owner || 
-            msg.sender == state.owner || 
-            msg.sender == address(this), 
+            _lastExternalCaller() == state.owner || msg.sender == state.owner || msg.sender == address(this),
             "MintLogic: unauthorised"
         );
         _;
     }
 
-    function mint(address to, uint256 tokenId) override public virtual onlyOwnerOrSelf {
+    function mint(address to, uint256 tokenId) public virtual override onlyOwnerOrSelf {
         super.mint(to, tokenId);
     }
 }

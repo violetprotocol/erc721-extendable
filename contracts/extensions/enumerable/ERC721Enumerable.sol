@@ -16,16 +16,20 @@ import "../base/ERC721.sol";
  *
  */
 contract ERC721Enumerable is ERC721 {
-    constructor(string memory name_, string memory symbol_, 
+    constructor(
+        string memory name_,
+        string memory symbol_,
         address extendLogic,
         address approveLogic,
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
         address hooksLogic,
-        address enumerableGetterLogic) 
-    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {
-        (bool extendGetterSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", enumerableGetterLogic));
+        address enumerableGetterLogic
+    ) ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {
+        (bool extendGetterSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("extend(address)", enumerableGetterLogic)
+        );
         require(extendGetterSuccess, "failed to initialise enumerable getter");
     }
 }

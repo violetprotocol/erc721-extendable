@@ -15,21 +15,23 @@ import "../base/ERC721.sol";
  *
  */
 contract ERC721Metadata is ERC721 {
-    constructor(string memory name_, string memory symbol_, 
+    constructor(
+        string memory name_,
+        string memory symbol_,
         address extendLogic,
         address approveLogic,
         address getterLogic,
         address onReceiveLogic,
         address transferLogic,
-        address hooksLogic) 
-    ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {}
+        address hooksLogic
+    ) ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {}
 
     /**
-    * @dev Extends the contract with Metadata-specific functionalities
-    *
-    * Must be called immediately after contract deployment.
-    *
-    */
+     * @dev Extends the contract with Metadata-specific functionalities
+     *
+     * Must be called immediately after contract deployment.
+     *
+     */
     function finaliseERC721MetadataExtending(
         address metadataGetterLogic,
         address setTokenURILogic,

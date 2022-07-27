@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
+import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
 import "./IEnumerableGetterLogic.sol";
 

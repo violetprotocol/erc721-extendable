@@ -6,6 +6,7 @@ import "../../base/hooks/ERC721HooksLogic.sol";
 import "../../base/getter/IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
+// solhint-disable-next-line max-line-length
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol
 contract EnumerableHooksLogic is ERC721HooksLogic {
     /**
@@ -27,7 +28,7 @@ contract EnumerableHooksLogic is ERC721HooksLogic {
         address from,
         address to,
         uint256 tokenId
-    ) override(ERC721HooksLogic) public _internal virtual {
+    ) public virtual override(ERC721HooksLogic) _internal {
         if (from == address(0)) {
             _addTokenToAllTokensEnumeration(tokenId);
         } else if (from != to) {
@@ -82,7 +83,8 @@ contract EnumerableHooksLogic is ERC721HooksLogic {
         if (tokenIndex != lastTokenIndex) {
             uint256 lastTokenId = state._ownedTokens[from][lastTokenIndex];
 
-            state._ownedTokens[from][tokenIndex] = lastTokenId; // Move the last token to the slot of the to-delete token
+            // Move the last token to the slot of the to-delete token
+            state._ownedTokens[from][tokenIndex] = lastTokenId;
             state._ownedTokensIndex[lastTokenId] = tokenIndex; // Update the moved token's index
         }
 

@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "../transfer/ITransferLogic.sol";
 import "@violetprotocol/extendable/extensions/Extension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
+import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
 import "../hooks/IERC721Hooks.sol";
 import "../approve/ApproveLogic.sol";

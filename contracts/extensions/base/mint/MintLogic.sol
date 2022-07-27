@@ -2,7 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@violetprotocol/extendable/extensions/Extension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
+import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import "../getter/IGetterLogic.sol";
 import "../receiver/IOnReceiveLogic.sol";
 import "../hooks/IERC721Hooks.sol";
@@ -19,7 +19,7 @@ abstract contract MintLogic is Extension, Events {
      * Requirements:
      *
      * - `tokenId` must not exist.
-     * - If `to` refers to a smart contract, 
+     * - If `to` refers to a smart contract,
      *      it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer.
      *
      * Emits a {Transfer} event.

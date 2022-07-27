@@ -21,7 +21,7 @@ interface IGetterLogic {
      * @dev See {IERC721-isApprovedForAll}.
      */
     function isApprovedForAll(address owner, address operator) external returns (bool);
-    
+
     /**
      * @dev Returns whether `tokenId` exists.
      *

@@ -18,21 +18,27 @@ task("deploy:ERC721Metadata")
   .addParam("mint", "Mint Logic address")
   .addParam("burn", "MetadataBurn Logic address")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
-    const erc721 = <ERC721Metadata>await deploy(ethers, "ERC721Metadata", 
+    const erc721 = <ERC721Metadata>(
+      await deploy(
+        ethers,
+        "ERC721Metadata",
         taskArguments.name,
         taskArguments.symbol,
-        taskArguments.extend, 
-        taskArguments.approve, 
-        taskArguments.getter, 
-        taskArguments.onreceive, 
+        taskArguments.extend,
+        taskArguments.approve,
+        taskArguments.getter,
+        taskArguments.onreceive,
         taskArguments.transfer,
-        taskArguments.hooks
+        taskArguments.hooks,
+      )
     );
     await erc721.finaliseERC721MetadataExtending(
-      taskArguments.metadatagetter, 
-      taskArguments.settokenuri, 
-      taskArguments.mint, 
-      taskArguments.burn
+      taskArguments.metadatagetter,
+      taskArguments.settokenuri,
+      taskArguments.mint,
+      taskArguments.burn,
     );
     console.log("ERC721Metadata deployed to: ", erc721.address);
   });
+
+export default {};

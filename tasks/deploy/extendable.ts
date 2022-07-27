@@ -7,4 +7,6 @@ task("deploy:Extendable")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
     const extendable = await deploy(ethers, "Extendable", taskArguments.extend);
     console.log(`Extendable deployed to: `, extendable.address);
-});
+  });
+
+export default {};

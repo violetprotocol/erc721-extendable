@@ -19,16 +19,15 @@ contract BasicBurnLogic is IBasicBurnLogic, BurnLogic {
      *
      * Emits a {Transfer} event.
      */
-    function burn(uint256 tokenId) override virtual public {
+    function burn(uint256 tokenId) public virtual override {
         _burn(tokenId);
     }
 
-
-    function getInterfaceId() override virtual public pure returns(bytes4) {
-        return(type(IBasicBurnLogic).interfaceId);
+    function getInterfaceId() public pure virtual override returns (bytes4) {
+        return (type(IBasicBurnLogic).interfaceId);
     }
 
-    function getInterface() override virtual public pure returns(string memory) {
+    function getInterface() public pure virtual override returns (string memory) {
         return "function burn(uint256 tokenId) external;\n";
     }
 }

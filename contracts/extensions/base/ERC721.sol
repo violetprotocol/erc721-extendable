@@ -14,7 +14,9 @@ import { ERC721State, ERC721Storage } from "../../storage/ERC721Storage.sol";
  *
  */
 contract ERC721 is Extendable {
-    constructor(string memory name_, string memory symbol_, 
+    constructor(
+        string memory name_,
+        string memory symbol_,
         address extendLogic,
         address approveLogic,
         address getterLogic,
@@ -38,7 +40,7 @@ contract ERC721 is Extendable {
             abi.encodeWithSignature("extend(address)", getterLogic)
         );
         require(extendGetterSuccess, "failed to initialise getter");
-        
+
         (bool extendOnReceiveSuccess, ) = extendLogic.delegatecall(
             abi.encodeWithSignature("extend(address)", onReceiveLogic)
         );
@@ -49,10 +51,7 @@ contract ERC721 is Extendable {
         );
         require(extendTransferSuccess, "failed to initialise transfer");
 
-        (bool extendHooksSuccess, ) = extendLogic.delegatecall(
-            abi.encodeWithSignature("extend(address)", hooksLogic)
-        );
+        (bool extendHooksSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", hooksLogic));
         require(extendHooksSuccess, "failed to initialise hooks");
-
     }
 }

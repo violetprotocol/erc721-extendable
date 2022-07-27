@@ -10,18 +10,16 @@ import "./MetadataBurnLogic.sol";
  * Uses PermissioningLogic to restrict metadata `burn` caller to only `owner` or the current contract
  */
 contract PermissionedMetadataBurnLogic is MetadataBurnLogic {
-    modifier onlyOwnerOrSelf virtual {
+    modifier onlyOwnerOrSelf() virtual {
         RoleState storage state = Permissions._getStorage();
         require(
-            _lastExternalCaller() == state.owner || 
-            msg.sender == state.owner || 
-            msg.sender == address(this), 
+            _lastExternalCaller() == state.owner || msg.sender == state.owner || msg.sender == address(this),
             "MetadataBurnLogic: unauthorised"
         );
         _;
     }
-    
-    function burn(uint256 tokenId) override public virtual onlyOwnerOrSelf {
+
+    function burn(uint256 tokenId) public virtual override onlyOwnerOrSelf {
         super.burn(tokenId);
     }
 }
