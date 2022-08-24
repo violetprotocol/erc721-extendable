@@ -13,15 +13,19 @@ task("deploy:ERC721")
   .addParam("transfer", "Transfer Logic address")
   .addParam("hooks", "Hooks Logic address")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
-    const erc721 = await deploy(ethers, "ERC721", 
-        taskArguments.name,
-        taskArguments.symbol,
-        taskArguments.extend, 
-        taskArguments.approve, 
-        taskArguments.getter, 
-        taskArguments.onreceive, 
-        taskArguments.transfer,
-        taskArguments.hooks
+    const erc721 = await deploy(
+      ethers,
+      "ERC721",
+      taskArguments.name,
+      taskArguments.symbol,
+      taskArguments.extend,
+      taskArguments.approve,
+      taskArguments.getter,
+      taskArguments.onreceive,
+      taskArguments.transfer,
+      taskArguments.hooks,
     );
     console.log("ERC721 deployed to: ", erc721.address);
   });
+
+export default {};

@@ -27,7 +27,6 @@ contract TransferLogic is ITransferLogic, Extension, Events {
         address to,
         uint256 tokenId
     ) public virtual override {
-        //solhint-disable-next-line max-line-length
         require(
             IGetterLogic(address(this))._isApprovedOrOwner(_lastExternalCaller(), tokenId),
             "ERC721: transfer caller is not owner nor approved"

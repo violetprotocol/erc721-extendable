@@ -1,20 +1,11 @@
-const deployExtendable = require("./deploy/extendable");
-const deployExtension = require("./deploy/extension");
-const deployBase = require("./deploy/erc721");
-const deployMetadata = require("./deploy/erc721Metadata");
-const deployEnumerable = require("./deploy/erc721Enumerable");
+import deployExtendable from "./deploy/extendable";
+import deployExtension from "./deploy/extension";
+import deployBase from "./deploy/erc721";
+import deployMetadata from "./deploy/erc721Metadata";
+import deployEnumerable from "./deploy/erc721Enumerable";
 
-const extend = require("./extend");
-const accounts = require("./accounts");
-const mint = require("./mint")
+import extend from "./extend";
+import accounts from "./accounts";
+import mint from "./mint";
 
-export { 
-    accounts, 
-    deployExtendable, 
-    deployExtension, 
-    extend, 
-    deployBase, 
-    deployMetadata, 
-    deployEnumerable,
-    mint
-};
+export { accounts, deployExtendable, deployExtension, extend, deployBase, deployMetadata, deployEnumerable, mint };
