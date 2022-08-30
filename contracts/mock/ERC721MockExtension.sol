@@ -41,7 +41,7 @@ contract ERC721MockExtension is MintLogic, BurnLogic {
         return IGetterLogic(address(this))._exists(tokenId);
     }
 
-    function mint(address to, uint256 tokenId) public {
+    function mint(address to, uint256 tokenId) public override {
         _mint(to, tokenId);
     }
 
@@ -58,15 +58,31 @@ contract ERC721MockExtension is MintLogic, BurnLogic {
         _safeMint(to, tokenId, _data);
     }
 
-    function burn(uint256 tokenId) public {
+    function burn(uint256 tokenId) public override {
         _burn(tokenId);
     }
 
-    function getInterfaceId() public pure virtual override returns (bytes4) {
-        return (type(IERC721MockExtension).interfaceId);
+    function getInterface()
+        public
+        pure
+        virtual
+        override(MintExtension, BurnExtension)
+        returns (Interface[] memory interfaces)
+    {
+        interfaces = new Interface[](1);
+
+        bytes4[] memory functions = new bytes4[](6);
+        functions[0] = IERC721MockExtension.baseURI.selector;
+        functions[1] = IERC721MockExtension.exists.selector;
+        functions[2] = IERC721MockExtension.mint.selector;
+        functions[3] = bytes4(keccak256("safeMint(address,uint256)"));
+        functions[4] = bytes4(keccak256("safeMint(address,uint256,bytes)"));
+        functions[5] = IERC721MockExtension.burn.selector;
+
+        interfaces[0] = Interface(type(IERC721MockExtension).interfaceId, functions);
     }
 
-    function getInterface() public pure virtual override returns (string memory) {
+    function getSolidityInterface() public pure virtual override(MintExtension, BurnExtension) returns (string memory) {
         return
             "function baseURI() external returns (string memory);\n"
             "function exists(uint256 tokenId) external returns (bool);\n"
@@ -84,7 +100,7 @@ contract ERC721MockExtension is MintLogic, BurnLogic {
 contract PermissionedERC721MockExtension is PermissionedMintLogic, PermissionedBurnLogic {
     // Copied from PermissionedMintLogic/PermissionedBurnLogic
     modifier onlyOwnerOrSelf() override(PermissionedMintLogic, PermissionedBurnLogic) {
-        RoleState storage state = Permissions._getStorage();
+        RoleState storage state = Permissions._getState();
         require(
             _lastExternalCaller() == state.owner || msg.sender == state.owner || msg.sender == address(this),
             "Logic: unauthorised"
@@ -122,11 +138,27 @@ contract PermissionedERC721MockExtension is PermissionedMintLogic, PermissionedB
         super.burn(tokenId);
     }
 
-    function getInterfaceId() public pure virtual override(BasicMintLogic, BasicBurnLogic) returns (bytes4) {
-        return (type(IERC721MockExtension).interfaceId);
+    function getInterface()
+        public
+        pure
+        virtual
+        override(MintExtension, BurnExtension)
+        returns (Interface[] memory interfaces)
+    {
+        interfaces = new Interface[](1);
+
+        bytes4[] memory functions = new bytes4[](6);
+        functions[0] = IERC721MockExtension.baseURI.selector;
+        functions[1] = IERC721MockExtension.exists.selector;
+        functions[2] = IERC721MockExtension.mint.selector;
+        functions[3] = bytes4(keccak256("safeMint(address,uint256)"));
+        functions[4] = bytes4(keccak256("safeMint(address,uint256,bytes)"));
+        functions[5] = IERC721MockExtension.burn.selector;
+
+        interfaces[0] = Interface(type(IERC721MockExtension).interfaceId, functions);
     }
 
-    function getInterface() public pure virtual override(BasicMintLogic, BasicBurnLogic) returns (string memory) {
+    function getSolidityInterface() public pure virtual override(MintExtension, BurnExtension) returns (string memory) {
         return
             "function baseURI() external returns (string memory);\n"
             "function exists(uint256 tokenId) external returns (bool);\n"
