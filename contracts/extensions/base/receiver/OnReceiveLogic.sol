@@ -9,7 +9,7 @@ import "./IOnReceiveLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
-contract OnReceiveLogic is IOnReceiveLogic, InternalExtension {
+contract OnReceiveLogic is OnReceiveExtension {
     using Address for address;
 
     /**
@@ -49,16 +49,5 @@ contract OnReceiveLogic is IOnReceiveLogic, InternalExtension {
         } else {
             return true;
         }
-    }
-
-    function getInterfaceId() public pure virtual override returns (bytes4) {
-        return (type(IOnReceiveLogic).interfaceId);
-    }
-
-    function getInterface() public pure virtual override returns (string memory) {
-        return
-            "function _checkOnERC721Received("
-            "address from, address to, uint256 tokenId, bytes memory _data"
-            ") external returns (bool);\n";
     }
 }
