@@ -10,10 +10,10 @@ import {
   ERC721Enumerable,
   ERC721MockExtension,
   ApproveLogic,
-  BasicBurnLogic,
+  BurnLogic,
   GetterLogic,
   ERC721HooksLogic,
-  BasicMintLogic,
+  MintLogic,
   OnReceiveLogic,
   TransferLogic,
   EnumerableGetterLogic,
@@ -27,6 +27,7 @@ import {
   PermissionedSetTokenURILogic,
   PermissionedERC721MockExtension,
 } from "../src/types";
+import { deployERC165Singleton } from "./utils/utils";
 
 const { solidity } = waffle;
 chai.use(solidity);
@@ -55,6 +56,8 @@ before("setup", async function () {
   this.signers.user = signers[7];
   this.signers.newOwner = signers[8];
 
+  await deployERC165Singleton(this.signers.admin);
+
   const extendArtifact = await artifacts.readArtifact("ExtendLogic");
   const permissioningArtifact = await artifacts.readArtifact("PermissioningLogic");
 
@@ -66,11 +69,11 @@ before("setup", async function () {
   const permissionedErc721MockExtensionArtifact = await artifacts.readArtifact("PermissionedERC721MockExtension");
 
   const approveArtifact = await artifacts.readArtifact("ApproveLogic");
-  const burnArtifact = await artifacts.readArtifact("BasicBurnLogic");
+  const burnArtifact = await artifacts.readArtifact("BurnLogic");
   const permissionedBurnArtifact = await artifacts.readArtifact("PermissionedBurnLogic");
   const baseGetterArtifact = await artifacts.readArtifact("GetterLogic");
   const hooksArtifact = await artifacts.readArtifact("ERC721HooksLogic");
-  const mintArtifact = await artifacts.readArtifact("BasicMintLogic");
+  const mintArtifact = await artifacts.readArtifact("MintLogic");
   const permissionedMintArtifact = await artifacts.readArtifact("PermissionedMintLogic");
   const onReceiveArtifact = await artifacts.readArtifact("OnReceiveLogic");
   const transferArtifact = await artifacts.readArtifact("TransferLogic");
@@ -116,13 +119,13 @@ before("setup", async function () {
     await waffle.deployContract(this.signers.admin, this.artifacts.permissioning)
   );
   this.approve = <ApproveLogic>await waffle.deployContract(this.signers.admin, this.artifacts.approve);
-  this.burn = <BasicBurnLogic>await waffle.deployContract(this.signers.admin, this.artifacts.burn);
+  this.burn = <BurnLogic>await waffle.deployContract(this.signers.admin, this.artifacts.burn);
   this.permissionedBurn = <PermissionedBurnLogic>(
     await waffle.deployContract(this.signers.admin, this.artifacts.permissionedBurn)
   );
   this.baseGetter = <GetterLogic>await waffle.deployContract(this.signers.admin, this.artifacts.baseGetter);
   this.hooks = <ERC721HooksLogic>await waffle.deployContract(this.signers.admin, this.artifacts.hooks);
-  this.mint = <BasicMintLogic>await waffle.deployContract(this.signers.admin, this.artifacts.mint);
+  this.mint = <MintLogic>await waffle.deployContract(this.signers.admin, this.artifacts.mint);
   this.permissionedMint = <PermissionedMintLogic>(
     await waffle.deployContract(this.signers.admin, this.artifacts.permissionedMint)
   );
@@ -189,7 +192,7 @@ before("setup", async function () {
     else await this.tokenAsExtend.extend(this.erc721MockExtension.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721.as(this.artifacts.approve);
-    this.tokenAsBurn = <BasicBurnLogic>await this.erc721.as(this.artifacts.burn);
+    this.tokenAsBurn = <BurnLogic>await this.erc721.as(this.artifacts.burn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721.as(this.artifacts.baseGetter);
     this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721.as(this.artifacts.onReceive);
     this.tokenAsTransfer = <TransferLogic>await this.erc721.as(this.artifacts.transfer);
@@ -214,7 +217,7 @@ before("setup", async function () {
     await this.tokenAsExtend.extend(this.erc721MockExtension.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721Enumerable.as(this.artifacts.approve);
-    this.tokenAsBurn = <BasicBurnLogic>await this.erc721Enumerable.as(this.artifacts.burn);
+    this.tokenAsBurn = <BurnLogic>await this.erc721Enumerable.as(this.artifacts.burn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721Enumerable.as(this.artifacts.baseGetter);
     this.tokenAsEnumerableGetter = <EnumerableGetterLogic>(
       await this.erc721Enumerable.as(this.artifacts.enumerableGetter)
@@ -253,7 +256,7 @@ before("setup", async function () {
     await this.tokenAsExtend.extend(this.erc721MockExtension.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721Metadata.as(this.artifacts.approve);
-    this.tokenAsMint = <BasicMintLogic>await this.erc721Metadata.as(this.artifacts.mint);
+    this.tokenAsMint = <MintLogic>await this.erc721Metadata.as(this.artifacts.mint);
     this.tokenAsBurn = <MetadataBurnLogic>await this.erc721Metadata.as(this.artifacts.metadataBurn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721Metadata.as(this.artifacts.baseGetter);
     this.tokenAsMetadataGetter = <MetadataGetterLogic>await this.erc721Metadata.as(this.artifacts.metadataGetter);
@@ -298,7 +301,7 @@ before("setup", async function () {
     await this.tokenAsExtend.extend(this.enumerableGetter.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721Metadata.as(this.artifacts.approve);
-    this.tokenAsMint = <BasicMintLogic>await this.erc721Metadata.as(this.artifacts.mint);
+    this.tokenAsMint = <MintLogic>await this.erc721Metadata.as(this.artifacts.mint);
     this.tokenAsBurn = <MetadataBurnLogic>await this.erc721Metadata.as(this.artifacts.metadataBurn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721Metadata.as(this.artifacts.baseGetter);
     this.tokenAsMetadataGetter = <MetadataGetterLogic>await this.erc721Metadata.as(this.artifacts.metadataGetter);

@@ -9,10 +9,10 @@ import {
   ERC721MockExtension,
   ERC721ReceiverMock,
   ApproveLogic,
-  BasicBurnLogic,
+  BurnLogic,
   GetterLogic,
   ERC721HooksLogic,
-  BasicMintLogic,
+  MintLogic,
   OnReceiveLogic,
   TransferLogic,
   EnumerableGetterLogic,
@@ -45,11 +45,11 @@ declare module "mocha" {
     erc721MockExtension: ERC721MockExtension;
     permissionedErc721MockExtension: PermissionedERC721MockExtension;
     approve: ApproveLogic;
-    burn: BasicBurnLogic;
+    burn: BurnLogic;
     permissionedBurn: PermissionedBurnLogic;
     baseGetter: GetterLogic;
     hooks: ERC721HooksLogic;
-    mint: BasicMintLogic;
+    mint: MintLogic;
     permissionedMint: PermissionedMintLogic;
     onReceive: OnReceiveLogic;
     transfer: TransferLogic;
