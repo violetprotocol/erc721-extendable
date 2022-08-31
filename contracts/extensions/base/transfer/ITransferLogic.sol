@@ -55,8 +55,8 @@ abstract contract TransferExtension is ITransferLogic, Extension {
 
         bytes4[] memory functions = new bytes4[](3);
         functions[0] = ITransferLogic.transferFrom.selector;
-        functions[1] = bytes4(keccak256("safeTransferFrom(address,address,uint256"));
-        functions[2] = bytes4(keccak256("safeTransferFrom(address,address,uint256,bytes"));
+        functions[1] = bytes4(keccak256("safeTransferFrom(address,address,uint256)"));
+        functions[2] = bytes4(keccak256("safeTransferFrom(address,address,uint256,bytes)"));
 
         interfaces[0] = Interface(type(ITransferLogic).interfaceId, functions);
     }

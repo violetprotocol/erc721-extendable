@@ -26,6 +26,7 @@ import {
   PermissionedMetadataBurnLogic,
   PermissionedSetTokenURILogic,
   PermissionedERC721MockExtension,
+  ERC721MockExists,
 } from "../src/types";
 import { deployERC165Singleton } from "./utils/utils";
 
@@ -65,6 +66,7 @@ before("setup", async function () {
   const erc721MetadataArtifact = await artifacts.readArtifact("ERC721Metadata");
   const erc721EnumerableArtifact = await artifacts.readArtifact("ERC721Enumerable");
   const erc721ReceiverMock = await artifacts.readArtifact("ERC721ReceiverMock");
+  const erc721MockExistsArtifact = await artifacts.readArtifact("ERC721MockExists");
   const erc721MockExtensionArtifact = await artifacts.readArtifact("ERC721MockExtension");
   const permissionedErc721MockExtensionArtifact = await artifacts.readArtifact("PermissionedERC721MockExtension");
 
@@ -95,6 +97,7 @@ before("setup", async function () {
     erc721Enumerable: erc721EnumerableArtifact,
     erc721Receiver: erc721ReceiverMock,
     erc721MockExtension: erc721MockExtensionArtifact,
+    erc721MockExists: erc721MockExistsArtifact,
     permissionedErc721MockExtension: permissionedErc721MockExtensionArtifact,
     approve: approveArtifact,
     burn: burnArtifact,
@@ -133,6 +136,9 @@ before("setup", async function () {
   this.transfer = <TransferLogic>await waffle.deployContract(this.signers.admin, this.artifacts.transfer);
   this.erc721MockExtension = <ERC721MockExtension>(
     await waffle.deployContract(this.signers.admin, this.artifacts.erc721MockExtension)
+  );
+  this.erc721MockExists = <ERC721MockExists>(
+    await waffle.deployContract(this.signers.admin, this.artifacts.erc721MockExists)
   );
   this.permissionedErc721MockExtension = <PermissionedERC721MockExtension>(
     await waffle.deployContract(this.signers.admin, this.artifacts.permissionedErc721MockExtension)
@@ -188,10 +194,18 @@ before("setup", async function () {
       ])
     );
     this.tokenAsExtend = <ExtendLogic>await this.erc721.as(this.artifacts.extend);
-    if (permissioned) await this.tokenAsExtend.extend(this.permissionedErc721MockExtension.address);
-    else await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    if (permissioned) {
+      await this.tokenAsExtend.extend(this.permissionedMint.address);
+      await this.tokenAsExtend.extend(this.permissionedBurn.address);
+      await this.tokenAsExtend.extend(this.permissionedErc721MockExtension.address);
+    } else {
+      await this.tokenAsExtend.extend(this.mint.address);
+      await this.tokenAsExtend.extend(this.burn.address);
+      await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    }
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721.as(this.artifacts.approve);
+    this.tokenAsMint = <MintLogic>await this.erc721.as(this.artifacts.mint);
     this.tokenAsBurn = <BurnLogic>await this.erc721.as(this.artifacts.burn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721.as(this.artifacts.baseGetter);
     this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721.as(this.artifacts.onReceive);
@@ -214,9 +228,12 @@ before("setup", async function () {
       ])
     );
     this.tokenAsExtend = <ExtendLogic>await this.erc721Enumerable.as(this.artifacts.extend);
-    await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    await this.tokenAsExtend.extend(this.mint.address);
+    await this.tokenAsExtend.extend(this.burn.address);
+    await this.tokenAsExtend.extend(this.erc721MockExists.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721Enumerable.as(this.artifacts.approve);
+    this.tokenAsMint = <MintLogic>await this.erc721Enumerable.as(this.artifacts.mint);
     this.tokenAsBurn = <BurnLogic>await this.erc721Enumerable.as(this.artifacts.burn);
     this.tokenAsBaseGetter = <GetterLogic>await this.erc721Enumerable.as(this.artifacts.baseGetter);
     this.tokenAsEnumerableGetter = <EnumerableGetterLogic>(
@@ -253,7 +270,7 @@ before("setup", async function () {
 
     // only to provide access to `exists` function, all other functions are shadowed by previous extensions
     this.tokenAsExtend = <ExtendLogic>await this.erc721Metadata.as(this.artifacts.extend);
-    await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    await this.tokenAsExtend.extend(this.erc721MockExists.address);
 
     this.tokenAsApprove = <ApproveLogic>await this.erc721Metadata.as(this.artifacts.approve);
     this.tokenAsMint = <MintLogic>await this.erc721Metadata.as(this.artifacts.mint);
