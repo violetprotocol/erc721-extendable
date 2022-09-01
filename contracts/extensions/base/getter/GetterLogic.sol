@@ -3,14 +3,13 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
-import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import "./IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
 // To follow Extension principles, maybe best to separate each function into a different Extension
-contract GetterLogic is IGetterLogic, InternalExtension {
+contract GetterLogic is GetterExtension {
     using Address for address;
     using Strings for uint256;
 
@@ -66,19 +65,5 @@ contract GetterLogic is IGetterLogic, InternalExtension {
         require(IGetterLogic(address(this))._exists(tokenId), "ERC721: operator query for nonexistent token");
         address owner = ownerOf(tokenId);
         return (spender == owner || spender == getApproved(tokenId) || isApprovedForAll(owner, spender));
-    }
-
-    function getInterfaceId() public pure virtual override returns (bytes4) {
-        return (type(IGetterLogic).interfaceId);
-    }
-
-    function getInterface() public pure virtual override returns (string memory) {
-        return
-            "function balanceOf(address owner) external view returns (uint256);\n"
-            "function ownerOf(uint256 tokenId) external view returns (address);\n"
-            "function getApproved(uint256 tokenId) external view returns (address);\n"
-            "function isApprovedForAll(address owner, address operator) external view returns (bool);\n"
-            "function _exists(uint256 tokenId) external view returns (bool);\n"
-            "function _isApprovedOrOwner(address spender, uint256 tokenId) external view returns (bool);\n";
     }
 }

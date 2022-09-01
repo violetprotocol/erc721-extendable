@@ -6,7 +6,7 @@ import "./SetTokenURILogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
-contract BasicSetTokenURILogic is IBasicSetTokenURILogic, SetTokenURILogic {
+contract BasicSetTokenURILogic is BasicSetTokenURIExtension {
     /**
      * @dev See {ISetTokenURILogic-_setTokenURI}.
      */
@@ -19,15 +19,5 @@ contract BasicSetTokenURILogic is IBasicSetTokenURILogic, SetTokenURILogic {
      */
     function setBaseURI(string memory _baseURI) public virtual override {
         ISetTokenURILogic(address(this))._setBaseURI(_baseURI);
-    }
-
-    function getInterfaceId() public pure virtual override returns (bytes4) {
-        return (type(IBasicSetTokenURILogic).interfaceId);
-    }
-
-    function getInterface() public pure virtual override returns (string memory) {
-        return
-            "function setTokenURI(uint256 tokenId, string memory _tokenURI) external;\n"
-            "function setBaseURI(string memory _tokenURI) external;\n";
     }
 }

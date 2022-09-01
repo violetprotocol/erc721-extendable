@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+import "@violetprotocol/extendable/extensions/InternalExtension.sol";
+
 interface IERC721Hooks {
     /**
      * @dev Hook that is called before any token transfer. This includes minting
@@ -39,4 +41,28 @@ interface IERC721Hooks {
         address to,
         uint256 tokenId
     ) external;
+}
+
+abstract contract ERC721HooksExtension is IERC721Hooks, InternalExtension {
+    /**
+     * @dev see {IExtension-getSolidityInterface}
+     */
+    function getSolidityInterface() public pure virtual override returns (string memory) {
+        return
+            "function _beforeTokenTransfer(address from, address to, uint256 tokenId) external;\n"
+            "function _afterTokenTransfer(address from, address to, uint256 tokenId) external;\n";
+    }
+
+    /**
+     * @dev see {IExtension-getInterface}
+     */
+    function getInterface() public virtual override returns (Interface[] memory interfaces) {
+        interfaces = new Interface[](1);
+
+        bytes4[] memory functions = new bytes4[](2);
+        functions[0] = IERC721Hooks._beforeTokenTransfer.selector;
+        functions[1] = IERC721Hooks._afterTokenTransfer.selector;
+
+        interfaces[0] = Interface(type(IERC721Hooks).interfaceId, functions);
+    }
 }

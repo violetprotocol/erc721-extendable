@@ -8,8 +8,8 @@ export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
   context("with minted tokens", function () {
     beforeEach(async function () {
       await this.redeploy(module, false);
-      await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
-      await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
+      await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
+      await this.tokenAsMint.mint(this.signers.owner.address, secondTokenId);
       this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
     });
 
@@ -101,8 +101,8 @@ export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
           const anotherNewTokenId = BigNumber.from(400);
 
           await this.tokenAsBurn.burn(tokenId);
-          await this.tokenAsErc721MockExtension.mint(this.signers.newOwner.address, newTokenId);
-          await this.tokenAsErc721MockExtension.mint(this.signers.newOwner.address, anotherNewTokenId);
+          await this.tokenAsMint.mint(this.signers.newOwner.address, newTokenId);
+          await this.tokenAsMint.mint(this.signers.newOwner.address, anotherNewTokenId);
 
           expect(await this.tokenAsEnumerableGetter.callStatic.totalSupply()).to.equal(BigNumber.from(3));
 
@@ -124,14 +124,14 @@ export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
     });
 
     it("reverts with a null destination address", async function () {
-      await expect(this.tokenAsErc721MockExtension.mint(ethers.constants.AddressZero, firstTokenId)).to.be.revertedWith(
+      await expect(this.tokenAsMint.mint(ethers.constants.AddressZero, firstTokenId)).to.be.revertedWith(
         "ERC721: mint to the zero address",
       );
     });
 
     context("with minted token", async function () {
       beforeEach(async function () {
-        this.receipt = await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
+        this.receipt = await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
       });
 
       it("adjusts owner tokens by index", async function () {
@@ -157,8 +157,8 @@ export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
 
     context("with minted tokens", function () {
       beforeEach(async function () {
-        await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
-        await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
+        await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
+        await this.tokenAsMint.mint(this.signers.owner.address, secondTokenId);
       });
 
       context("with burnt token", function () {

@@ -1,7 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@violetprotocol/extendable/extensions/Extension.sol";
 import { ERC721State, ERC721Storage } from "../../../storage/ERC721Storage.sol";
 import { TokenURIState, TokenURIStorage } from "../../../storage/ERC721TokenURIStorage.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -10,7 +9,7 @@ import "../../base/getter/IGetterLogic.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
-contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
+contract MetadataGetterLogic is MetadataGetterExtension {
     using Strings for uint256;
 
     /**
@@ -73,17 +72,5 @@ contract MetadataGetterLogic is IMetadataGetterLogic, Extension {
     function _baseURI() internal virtual returns (string memory) {
         TokenURIState storage state = TokenURIStorage._getState();
         return state.baseURI;
-    }
-
-    function getInterfaceId() public pure virtual override returns (bytes4) {
-        return (type(IMetadataGetterLogic).interfaceId);
-    }
-
-    function getInterface() public pure virtual override returns (string memory) {
-        return
-            "function name() external view returns (string memory);\n"
-            "function symbol() external view returns (string memory);\n"
-            "function tokenURI(uint256 tokenId) external view returns (string memory);\n"
-            "function baseURI() external returns (string memory);\n";
     }
 }

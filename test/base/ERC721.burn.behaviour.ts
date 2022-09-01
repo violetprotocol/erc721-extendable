@@ -19,7 +19,7 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
       });
 
       it("reverts when burning a non-existent token id", async function () {
-        await expect(this.tokenAsErc721MockExtension.burn(nonExistentTokenId)).to.be.revertedWith(
+        await expect(this.tokenAsBurn.burn(nonExistentTokenId)).to.be.revertedWith(
           "ERC721: owner query for nonexistent token",
         );
       });
@@ -27,13 +27,13 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
       context("with minted tokens", function () {
         beforeEach(async function () {
           await this.redeploy(module, true);
-          await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
+          await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
         });
 
         context("with burnt token", function () {
           context("from owner", async function () {
             beforeEach(async function () {
-              tx = await this.tokenAsErc721MockExtension.burn(firstTokenId);
+              tx = await this.tokenAsBurn.burn(firstTokenId);
             });
 
             it("emits a Transfer event", async function () {
@@ -62,7 +62,7 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
             });
 
             it("reverts when burning a token id that has been deleted", async function () {
-              await expect(this.tokenAsErc721MockExtension.burn(firstTokenId)).to.be.revertedWith(
+              await expect(this.tokenAsBurn.burn(firstTokenId)).to.be.revertedWith(
                 "ERC721: owner query for nonexistent token",
               );
             });
@@ -70,9 +70,9 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
 
           context("from non-owner", async function () {
             it("reverts", async function () {
-              await expect(
-                this.tokenAsErc721MockExtension.connect(this.signers.other).burn(firstTokenId),
-              ).to.be.revertedWith("Logic: unauthorised");
+              await expect(this.tokenAsBurn.connect(this.signers.other).burn(firstTokenId)).to.be.revertedWith(
+                "Logic: unauthorised",
+              );
             });
           });
         });
@@ -85,7 +85,7 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
       });
 
       it("reverts when burning a non-existent token id", async function () {
-        await expect(this.tokenAsErc721MockExtension.burn(nonExistentTokenId)).to.be.revertedWith(
+        await expect(this.tokenAsBurn.burn(nonExistentTokenId)).to.be.revertedWith(
           "ERC721: owner query for nonexistent token",
         );
       });
@@ -93,12 +93,12 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
       context("with minted tokens", function () {
         beforeEach(async function () {
           await this.redeploy(module, false);
-          await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
+          await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
         });
 
         context("with burnt token", function () {
           beforeEach(async function () {
-            tx = await this.tokenAsErc721MockExtension.burn(firstTokenId);
+            tx = await this.tokenAsBurn.burn(firstTokenId);
           });
 
           it("emits a Transfer event", async function () {
@@ -127,7 +127,7 @@ const shouldBehaveLikeERC721Burn = (module: MODULE) => {
           });
 
           it("reverts when burning a token id that has been deleted", async function () {
-            await expect(this.tokenAsErc721MockExtension.burn(firstTokenId)).to.be.revertedWith(
+            await expect(this.tokenAsBurn.burn(firstTokenId)).to.be.revertedWith(
               "ERC721: owner query for nonexistent token",
             );
           });

@@ -11,7 +11,7 @@ import "./MetadataBurnLogic.sol";
  */
 contract PermissionedMetadataBurnLogic is MetadataBurnLogic {
     modifier onlyOwnerOrSelf() virtual {
-        RoleState storage state = Permissions._getStorage();
+        RoleState storage state = Permissions._getState();
         require(
             _lastExternalCaller() == state.owner || msg.sender == state.owner || msg.sender == address(this),
             "MetadataBurnLogic: unauthorised"

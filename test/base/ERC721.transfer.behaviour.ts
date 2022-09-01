@@ -17,8 +17,8 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
   context("with minted tokens", async function () {
     before(async function () {
       await this.redeploy(module, false);
-      await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
-      await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId);
+      await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
+      await this.tokenAsMint.mint(this.signers.owner.address, secondTokenId);
       this.toWhom = this.signers.other.address; // default to other for toWhom in context-dependent tests
     });
 
@@ -30,7 +30,7 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
 
       beforeEach(async function () {
         await this.redeploy(module, false);
-        await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, tokenId);
+        await this.tokenAsMint.mint(this.signers.owner.address, tokenId);
         await expect(
           this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, tokenId),
         ).to.not.be.reverted;
@@ -82,9 +82,7 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
       ) {
         beforeEach(async function () {
           await this.redeploy(module, false);
-          await expect(
-            this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId),
-          ).to.not.be.reverted;
+          await expect(this.tokenAsMint.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
           await expect(
             this.tokenAsApprove.connect(this.signers.owner).approve(this.signers.approved.address, firstTokenId),
           ).to.not.be.reverted;
@@ -171,12 +169,8 @@ const shouldBehaveLikeERC721Transfer = (module: MODULE) => {
         context("when sent to the owner", function () {
           before(async function () {
             await this.redeploy(module, false);
-            await expect(
-              this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId),
-            ).to.not.be.reverted;
-            await expect(
-              this.tokenAsErc721MockExtension.mint(this.signers.owner.address, secondTokenId),
-            ).to.not.be.reverted;
+            await expect(this.tokenAsMint.mint(this.signers.owner.address, firstTokenId)).to.not.be.reverted;
+            await expect(this.tokenAsMint.mint(this.signers.owner.address, secondTokenId)).to.not.be.reverted;
             tx = <ContractTransaction>(
               (<any>(
                 await transferFunction(

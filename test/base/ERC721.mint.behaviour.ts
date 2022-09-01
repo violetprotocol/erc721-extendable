@@ -21,21 +21,21 @@ const shouldBehaveLikeERC721Mint = (module: MODULE) => {
       });
 
       it("reverts with a null destination address", async function () {
-        await expect(this.tokenAsErc721MockExtension.mint(ZERO_ADDRESS, firstTokenId)).to.be.revertedWith(
+        await expect(this.tokenAsMint.mint(ZERO_ADDRESS, firstTokenId)).to.be.revertedWith(
           "ERC721: mint to the zero address",
         );
       });
 
       it("reverts with non owner", async function () {
-        await expect(
-          this.tokenAsErc721MockExtension.connect(this.signers.other).mint(ZERO_ADDRESS, firstTokenId),
-        ).to.be.revertedWith("Logic: unauthorised");
+        await expect(this.tokenAsMint.connect(this.signers.other).mint(ZERO_ADDRESS, firstTokenId)).to.be.revertedWith(
+          "Logic: unauthorised",
+        );
       });
 
       context("with minted token", async function () {
         beforeEach(async function () {
           await this.redeploy(module, true);
-          tx = await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
+          tx = await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
         });
 
         it("emits a Transfer event", async function () {
@@ -54,9 +54,9 @@ const shouldBehaveLikeERC721Mint = (module: MODULE) => {
         });
 
         it("reverts when adding a token id that already exists", async function () {
-          await expect(
-            this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId),
-          ).to.be.revertedWith("ERC721: token already minted");
+          await expect(this.tokenAsMint.mint(this.signers.owner.address, firstTokenId)).to.be.revertedWith(
+            "ERC721: token already minted",
+          );
         });
 
         describe("safe mint", function () {
@@ -288,7 +288,7 @@ const shouldBehaveLikeERC721Mint = (module: MODULE) => {
       });
 
       it("reverts with a null destination address", async function () {
-        await expect(this.tokenAsErc721MockExtension.mint(ZERO_ADDRESS, firstTokenId)).to.be.revertedWith(
+        await expect(this.tokenAsMint.mint(ZERO_ADDRESS, firstTokenId)).to.be.revertedWith(
           "ERC721: mint to the zero address",
         );
       });
@@ -296,7 +296,7 @@ const shouldBehaveLikeERC721Mint = (module: MODULE) => {
       context("with minted token", async function () {
         beforeEach(async function () {
           await this.redeploy(module, false);
-          tx = await this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId);
+          tx = await this.tokenAsMint.mint(this.signers.owner.address, firstTokenId);
         });
 
         it("emits a Transfer event", async function () {
@@ -315,9 +315,9 @@ const shouldBehaveLikeERC721Mint = (module: MODULE) => {
         });
 
         it("reverts when adding a token id that already exists", async function () {
-          await expect(
-            this.tokenAsErc721MockExtension.mint(this.signers.owner.address, firstTokenId),
-          ).to.be.revertedWith("ERC721: token already minted");
+          await expect(this.tokenAsMint.mint(this.signers.owner.address, firstTokenId)).to.be.revertedWith(
+            "ERC721: token already minted",
+          );
         });
 
         describe("safe mint", function () {
