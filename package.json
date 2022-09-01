@@ -1,6 +1,6 @@
 {
   "name": "@violetprotocol/erc721extendable",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Extendable conversion of the ERC721 token standard",
   "main": "index.js",
   "files": [
