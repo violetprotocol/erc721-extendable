@@ -7,4 +7,6 @@ task("deploy:Extension")
   .setAction(async function (taskArguments: TaskArguments, { ethers }) {
     const contract = await deploy(ethers, taskArguments.name);
     console.log(`${taskArguments.name} deployed to: `, contract.address);
-});
+  });
+
+export default {};

@@ -1,12 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
-import "@violetprotocol/extendable/extensions/Extension.sol";
-import {ERC721State, ERC721Storage} from "../../../storage/ERC721Storage.sol";
-import { RoleState, Permissions } from "@violetprotocol/extendable/storage/PermissionStorage.sol";
-import "./IEnumerableGetterLogic.sol";
+import "@violetprotocol/extendable/extensions/InternalExtension.sol";
 
 // Functional logic extracted from openZeppelin:
 // https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol
@@ -26,4 +21,30 @@ interface IEnumerableGetterLogic {
      * @dev See {IERC721Enumerable-tokenByIndex}.
      */
     function tokenByIndex(uint256 index) external returns (uint256);
+}
+
+abstract contract EnumerableGetterExtension is IEnumerableGetterLogic, InternalExtension {
+    /**
+     * @dev see {IExtension-getSolidityInterface}
+     */
+    function getSolidityInterface() public pure virtual override returns (string memory) {
+        return
+            "function tokenOfOwnerByIndex(address owner, uint256 index) external returns (uint256);\n"
+            "function totalSupply() external returns (uint256);\n"
+            "function tokenByIndex(uint256 index) external returns (uint256);\n";
+    }
+
+    /**
+     * @dev see {IExtension-getInterface}
+     */
+    function getInterface() public virtual override returns (Interface[] memory interfaces) {
+        interfaces = new Interface[](1);
+
+        bytes4[] memory functions = new bytes4[](3);
+        functions[0] = IEnumerableGetterLogic.tokenOfOwnerByIndex.selector;
+        functions[1] = IEnumerableGetterLogic.totalSupply.selector;
+        functions[2] = IEnumerableGetterLogic.tokenByIndex.selector;
+
+        interfaces[0] = Interface(type(IEnumerableGetterLogic).interfaceId, functions);
+    }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@violetprotocol/erc721extendable",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Extendable conversion of the ERC721 token standard",
   "main": "index.js",
   "files": [
@@ -12,7 +12,7 @@
     "compile": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat compile",
     "coverage": "yarn typechain && hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/**/*.ts\" && yarn typechain",
     "deploy": "hardhat deploy:Greeter",
-    "lint": "yarn lint:sol && yarn lint:ts && yarn prettier:check",
+    "lint": "yarn lint:sol --max-warnings 50 && yarn lint:ts && yarn prettier:check",
     "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
     "prepare": "yarn clean && env COMPILE_MODE=production yarn compile && yarn typechain",
@@ -88,6 +88,6 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.0",
-    "@violetprotocol/extendable": "^1.1.0"
+    "@violetprotocol/extendable": "^1.2.0"
   }
 }

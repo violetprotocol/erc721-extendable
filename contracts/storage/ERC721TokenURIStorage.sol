@@ -10,11 +10,7 @@ struct TokenURIState {
 library TokenURIStorage {
     bytes32 constant STORAGE_NAME = keccak256("extendable:erc721:token_uri");
 
-    function _getState()
-        internal 
-        view
-        returns (TokenURIState storage tokenURIState) 
-    {
+    function _getState() internal view returns (TokenURIState storage tokenURIState) {
         bytes32 position = keccak256(abi.encodePacked(address(this), STORAGE_NAME));
         assembly {
             tokenURIState.slot := position
