@@ -8,5 +8,5 @@ interface Events {
     /**
      * @dev See {IERC721-Transfer}.
      */
-    event Transfer(address from, address to, uint256 tokenId);
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 }
