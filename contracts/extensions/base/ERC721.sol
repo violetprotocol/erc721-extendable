@@ -53,5 +53,10 @@ contract ERC721 is Extendable {
 
         (bool extendHooksSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", hooksLogic));
         require(extendHooksSuccess, "failed to initialise hooks");
+
+        (bool registerInterfaceSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("registerInterface(bytes4)", bytes4(0x80ac58cd))
+        );
+        require(registerInterfaceSuccess, "failed to register erc721 interface");
     }
 }

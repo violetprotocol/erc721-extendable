@@ -5,6 +5,11 @@ import { firstTokenId, secondTokenId } from "../base/ERC721.behaviour";
 import { MODULE } from "../setup";
 
 export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
+  it("should successfully register erc721Enumerable interface", async function () {
+    await this.redeploy(module, false);
+    expect(await this.tokenAsExtend.callStatic.supportsInterface("0x780e9d63")).to.be.true;
+  });
+
   context("with minted tokens", function () {
     beforeEach(async function () {
       await this.redeploy(module, false);

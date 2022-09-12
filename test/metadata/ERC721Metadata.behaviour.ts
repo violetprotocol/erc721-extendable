@@ -8,6 +8,10 @@ export function shouldBehaveLikeERC721Metadata(module: MODULE) {
       await this.redeploy(module, false);
     });
 
+    it("should successfully register erc721Metadata interface", async function () {
+      expect(await this.tokenAsExtend.callStatic.supportsInterface("0x5b5e139f")).to.be.true;
+    });
+
     describe("basic", function () {
       it("has a name", async function () {
         expect(await this.tokenAsMetadataGetter.callStatic.name()).to.be.equal(TOKEN_NAME);

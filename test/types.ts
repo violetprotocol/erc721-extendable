@@ -26,6 +26,7 @@ import {
   PermissionedSetTokenURILogic,
   PermissionedERC721MockExtension,
   ERC721MockExists,
+  ERC721MetadataEnumerable,
 } from "../src/types";
 import { Artifact } from "hardhat/types";
 import { Contract } from "ethers";
@@ -42,6 +43,7 @@ declare module "mocha" {
     erc721: Extended<ERC721>;
     erc721Metadata: Extended<ERC721Metadata>;
     erc721Enumerable: Extended<ERC721Enumerable>;
+    erc721MetadataEnumerable: Extended<ERC721MetadataEnumerable>;
     erc721Receiver: ERC721ReceiverMock;
     erc721MockExists: ERC721MockExists;
     erc721MockExtension: ERC721MockExtension;
@@ -90,6 +92,7 @@ export interface Artifacts {
   erc721: Artifact;
   erc721Metadata: Artifact;
   erc721Enumerable: Artifact;
+  erc721MetadataEnumerable: Artifact;
   erc721Receiver: Artifact;
   erc721MockExtension: Artifact;
   erc721MockExists: Artifact;

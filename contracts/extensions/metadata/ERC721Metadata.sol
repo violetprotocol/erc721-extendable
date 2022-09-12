@@ -44,5 +44,7 @@ contract ERC721Metadata is ERC721 {
         self.extend(setTokenURILogic);
         self.extend(mintLogic);
         self.extend(burnLogic);
+
+        IERC165Register(address(this)).registerInterface(0x5b5e139f);
     }
 }
