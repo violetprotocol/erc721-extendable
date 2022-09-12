@@ -13,6 +13,8 @@ import { ERC721State, ERC721Storage } from "../../storage/ERC721Storage.sol";
  * for each of the token features live.
  *
  */
+bytes4 constant ERC721InterfaceId = 0x80ac58cd;
+
 contract ERC721 is Extendable {
     constructor(
         string memory name_,
@@ -53,5 +55,10 @@ contract ERC721 is Extendable {
 
         (bool extendHooksSuccess, ) = extendLogic.delegatecall(abi.encodeWithSignature("extend(address)", hooksLogic));
         require(extendHooksSuccess, "failed to initialise hooks");
+
+        (bool registerInterfaceSuccess, ) = extendLogic.delegatecall(
+            abi.encodeWithSignature("registerInterface(bytes4)", ERC721InterfaceId)
+        );
+        require(registerInterfaceSuccess, "failed to register erc721 interface");
     }
 }

@@ -1,5 +1,7 @@
+import { expect } from "chai";
 import { BigNumber } from "ethers";
 import { MODULE } from "../setup";
+import { ERC721InterfaceId } from "../utils/constants";
 import { shouldBehaveLikeERC721Approve } from "./ERC721.approve.behaviour";
 import { shouldBehaveLikeERC721Balance } from "./ERC721.balance.behaviour";
 import { shouldBehaveLikeERC721Burn } from "./ERC721.burn.behaviour";
@@ -12,6 +14,11 @@ const shouldBehaveLikeERC721 = (module: MODULE) => {
   shouldBehaveLikeERC721Approve(module);
   shouldBehaveLikeERC721Balance(module);
   shouldBehaveLikeERC721Transfer(module);
+
+  it("should successfully register erc721 interface", async function () {
+    await this.redeploy(module, false);
+    expect(await this.tokenAsExtend.callStatic.supportsInterface(ERC721InterfaceId)).to.be.true;
+  });
 };
 
 export const Error = {

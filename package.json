@@ -88,6 +88,6 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.3.0",
-    "@violetprotocol/extendable": "^1.2.1"
+    "@violetprotocol/extendable": "^1.2.2"
   }
 }

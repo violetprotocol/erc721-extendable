@@ -8,6 +8,7 @@ import {
   ERC721,
   ERC721Metadata,
   ERC721Enumerable,
+  ERC721MetadataEnumerable,
   ERC721MockExtension,
   ApproveLogic,
   BurnLogic,
@@ -65,6 +66,8 @@ before("setup", async function () {
   const erc721Artifact = await artifacts.readArtifact("ERC721");
   const erc721MetadataArtifact = await artifacts.readArtifact("ERC721Metadata");
   const erc721EnumerableArtifact = await artifacts.readArtifact("ERC721Enumerable");
+  const erc721MetadataEnumerableArtifact = await artifacts.readArtifact("ERC721MetadataEnumerable");
+
   const erc721ReceiverMock = await artifacts.readArtifact("ERC721ReceiverMock");
   const erc721MockExistsArtifact = await artifacts.readArtifact("ERC721MockExists");
   const erc721MockExtensionArtifact = await artifacts.readArtifact("ERC721MockExtension");
@@ -95,6 +98,7 @@ before("setup", async function () {
     erc721: erc721Artifact,
     erc721Metadata: erc721MetadataArtifact,
     erc721Enumerable: erc721EnumerableArtifact,
+    erc721MetadataEnumerable: erc721MetadataEnumerableArtifact,
     erc721Receiver: erc721ReceiverMock,
     erc721MockExtension: erc721MockExtensionArtifact,
     erc721MockExists: erc721MockExistsArtifact,
@@ -268,7 +272,7 @@ before("setup", async function () {
         permissioned ? this.permissionedMetadataBurn.address : this.metadataBurn.address,
       );
 
-    // only to provide access to `exists` function, all other functions are shadowed by previous extensions
+    // only to provide access to `exists` function
     this.tokenAsExtend = <ExtendLogic>await this.erc721Metadata.as(this.artifacts.extend);
     await this.tokenAsExtend.extend(this.erc721MockExists.address);
 
@@ -287,8 +291,8 @@ before("setup", async function () {
 
   this.redeployMetadataEnumerable = async function (permissioned: boolean) {
     // Deploy metadata as initial base
-    this.erc721Metadata = <Extended<ERC721Metadata>>(
-      await deployExtendableContract(this.signers.admin, this.artifacts.erc721Metadata, [
+    this.erc721MetadataEnumerable = <Extended<ERC721MetadataEnumerable>>(
+      await deployExtendableContract(this.signers.admin, this.artifacts.erc721MetadataEnumerable, [
         TOKEN_NAME,
         TOKEN_SYMBOL,
         this.extend.address,
@@ -297,9 +301,10 @@ before("setup", async function () {
         this.onReceive.address,
         this.transfer.address,
         this.enumerableHooks.address,
+        this.enumerableGetter.address,
       ])
     );
-    await this.erc721Metadata
+    await this.erc721MetadataEnumerable
       .connect(this.signers.admin)
       .finaliseERC721MetadataExtending(
         this.metadataGetter.address,
@@ -308,26 +313,25 @@ before("setup", async function () {
         permissioned ? this.permissionedMetadataBurn.address : this.metadataBurn.address,
       );
 
-    // only to provide access to `exists` function, all other functions are shadowed by previous extensions
-    this.tokenAsExtend = <ExtendLogic>await this.erc721Metadata.as(this.artifacts.extend);
+    this.tokenAsExtend = <ExtendLogic>await this.erc721MetadataEnumerable.as(this.artifacts.extend);
     if (permissioned) await this.tokenAsExtend.extend(this.permissionedErc721MockExtension.address);
-    else await this.tokenAsExtend.extend(this.erc721MockExtension.address);
+    else this.tokenAsExtend.extend(this.erc721MockExtension.address);
 
-    // Extend Metadata with enumerable getter
-    this.tokenAsExtend = <ExtendLogic>await this.erc721Metadata.as(this.artifacts.extend);
-    await this.tokenAsExtend.extend(this.enumerableGetter.address);
-
-    this.tokenAsApprove = <ApproveLogic>await this.erc721Metadata.as(this.artifacts.approve);
-    this.tokenAsMint = <MintLogic>await this.erc721Metadata.as(this.artifacts.mint);
-    this.tokenAsBurn = <MetadataBurnLogic>await this.erc721Metadata.as(this.artifacts.metadataBurn);
-    this.tokenAsBaseGetter = <GetterLogic>await this.erc721Metadata.as(this.artifacts.baseGetter);
-    this.tokenAsMetadataGetter = <MetadataGetterLogic>await this.erc721Metadata.as(this.artifacts.metadataGetter);
-    this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721Metadata.as(this.artifacts.onReceive);
-    this.tokenAsTransfer = <TransferLogic>await this.erc721Metadata.as(this.artifacts.transfer);
-    this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721Metadata.as(this.artifacts.setTokenUri);
-    this.tokenAsErc721MockExtension = <ERC721MockExtension>(
-      await this.erc721Metadata.as(this.artifacts.erc721MockExtension)
+    this.tokenAsApprove = <ApproveLogic>await this.erc721MetadataEnumerable.as(this.artifacts.approve);
+    this.tokenAsMint = <MintLogic>await this.erc721MetadataEnumerable.as(this.artifacts.mint);
+    this.tokenAsBurn = <MetadataBurnLogic>await this.erc721MetadataEnumerable.as(this.artifacts.metadataBurn);
+    this.tokenAsBaseGetter = <GetterLogic>await this.erc721MetadataEnumerable.as(this.artifacts.baseGetter);
+    this.tokenAsMetadataGetter = <MetadataGetterLogic>(
+      await this.erc721MetadataEnumerable.as(this.artifacts.metadataGetter)
     );
-    this.tokenAsEnumerableGetter = <EnumerableGetterLogic>await this.erc721Metadata.as(this.artifacts.enumerableGetter);
+    this.tokenAsOnReceive = <OnReceiveLogic>await this.erc721MetadataEnumerable.as(this.artifacts.onReceive);
+    this.tokenAsTransfer = <TransferLogic>await this.erc721MetadataEnumerable.as(this.artifacts.transfer);
+    this.tokenAsSetTokenURI = <BasicSetTokenURILogic>await this.erc721MetadataEnumerable.as(this.artifacts.setTokenUri);
+    this.tokenAsErc721MockExtension = <ERC721MockExtension>(
+      await this.erc721MetadataEnumerable.as(this.artifacts.erc721MockExtension)
+    );
+    this.tokenAsEnumerableGetter = <EnumerableGetterLogic>(
+      await this.erc721MetadataEnumerable.as(this.artifacts.enumerableGetter)
+    );
   };
 });
