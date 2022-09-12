@@ -1,11 +1,16 @@
 import { expect } from "chai";
 import { firstTokenId, nonExistentTokenId } from "../base/ERC721.behaviour";
 import { MODULE, TOKEN_NAME, TOKEN_SYMBOL } from "../setup";
+import { ERC721MetadataInterfaceId } from "../utils/constants";
 
 export function shouldBehaveLikeERC721Metadata(module: MODULE) {
   context("metadata", function () {
     before(async function () {
       await this.redeploy(module, false);
+    });
+
+    it("should successfully register erc721Metadata interface", async function () {
+      expect(await this.tokenAsExtend.callStatic.supportsInterface(ERC721MetadataInterfaceId)).to.be.true;
     });
 
     describe("basic", function () {

@@ -14,6 +14,8 @@ import "../base/ERC721.sol";
  * calling the `finaliseERC721MetadataExtending` function.
  *
  */
+bytes4 constant ERC721MetadataInterfaceId = 0x5b5e139f;
+
 contract ERC721Metadata is ERC721 {
     constructor(
         string memory name_,
@@ -44,5 +46,7 @@ contract ERC721Metadata is ERC721 {
         self.extend(setTokenURILogic);
         self.extend(mintLogic);
         self.extend(burnLogic);
+
+        IERC165Register(address(this)).registerInterface(ERC721MetadataInterfaceId);
     }
 }

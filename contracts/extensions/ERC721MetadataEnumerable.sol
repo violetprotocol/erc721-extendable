@@ -1,23 +1,22 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "../base/ERC721.sol";
+import "./metadata/ERC721Metadata.sol";
+import "./enumerable/ERC721Enumerable.sol";
 
 /**
- * @dev ERC721Enumerable Extendable contract
+ * @dev ERC721MetadataEnumerable Extendable contract
  *
  * Constructor arguments take usual `name` and `symbol` arguments for the token
  * with additional extension addresses specifying where the functional logic
- * for each of the token features live which is passed to the Base ERC721 contract
+ * for each of the token features live which is passed to the ERC721Metadata contract
  *
- * Enumerable requires:
- * - `hooksLogic` must be the EnumerableHooksLogic extension address
- * - `enumerableGetterLogic` must be the EnumerableGetterLogic extension address
+ * Metadata-specific extensions must be extended immediately after deployment by
+ * calling the `finaliseERC721MetadataExtending` function.
  *
+ * Ensure that the hooksLogic used implements EnumerableHooksLogic
  */
-bytes4 constant ERC721EnumerableInterfaceId = 0x780e9d63;
-
-contract ERC721Enumerable is ERC721 {
+contract ERC721MetadataEnumerable is ERC721Metadata {
     constructor(
         string memory name_,
         string memory symbol_,
@@ -28,7 +27,18 @@ contract ERC721Enumerable is ERC721 {
         address transferLogic,
         address hooksLogic,
         address enumerableGetterLogic
-    ) ERC721(name_, symbol_, extendLogic, approveLogic, getterLogic, onReceiveLogic, transferLogic, hooksLogic) {
+    )
+        ERC721Metadata(
+            name_,
+            symbol_,
+            extendLogic,
+            approveLogic,
+            getterLogic,
+            onReceiveLogic,
+            transferLogic,
+            hooksLogic
+        )
+    {
         (bool extendGetterSuccess, ) = extendLogic.delegatecall(
             abi.encodeWithSignature("extend(address)", enumerableGetterLogic)
         );

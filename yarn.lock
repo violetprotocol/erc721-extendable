@@ -2087,7 +2087,7 @@ __metadata:
     "@types/node": ^17.0.18
     "@typescript-eslint/eslint-plugin": ^5.12.0
     "@typescript-eslint/parser": ^5.12.0
-    "@violetprotocol/extendable": ^1.2.0
+    "@violetprotocol/extendable": ^1.2.2
     chai: ^4.3.6
     commitizen: ^4.2.4
     cross-env: ^7.0.3
@@ -2119,12 +2119,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@violetprotocol/extendable@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@violetprotocol/extendable@npm:1.2.0"
+"@violetprotocol/extendable@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "@violetprotocol/extendable@npm:1.2.2"
   dependencies:
     "@openzeppelin/contracts": ^4.3.0
-  checksum: 7b92c0fd7509d0a658248fe3a39ded74d10a605d97e7a56a708d8e70a18d0229b352feea8b251d3a376f451677b3e9a6f8514059239861c6ec11e4e3a7cbc831
+  checksum: 2362fce6a3bd8c5bb765412e11eeb1385c0fdcb73b2fbf930531cfde2a960fcabb5355bcb4cfb1bd0f9d2a3d3965c84281ef5ed4ff093ddc57785e35491ba908
   languageName: node
   linkType: hard
 

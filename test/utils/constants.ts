@@ -35,3 +35,7 @@ export const factoryABI = [
     type: "function",
   },
 ];
+
+export const ERC721InterfaceId = "0x80ac58cd";
+export const ERC721MetadataInterfaceId = "0x5b5e139f";
+export const ERC721EnumerableInterfaceId = "0x780e9d63";
