@@ -15,6 +15,8 @@ import "../base/ERC721.sol";
  * - `enumerableGetterLogic` must be the EnumerableGetterLogic extension address
  *
  */
+bytes4 constant ERC721EnumerableInterfaceId = 0x780e9d63;
+
 contract ERC721Enumerable is ERC721 {
     constructor(
         string memory name_,
@@ -33,7 +35,7 @@ contract ERC721Enumerable is ERC721 {
         require(extendGetterSuccess, "failed to initialise enumerable getter");
 
         (bool registerEnumerableInterfaceSuccess, ) = extendLogic.delegatecall(
-            abi.encodeWithSignature("registerInterface(bytes4)", bytes4(0x780e9d63))
+            abi.encodeWithSignature("registerInterface(bytes4)", ERC721EnumerableInterfaceId)
         );
         require(registerEnumerableInterfaceSuccess, "failed to register IERC721Enumerable interface");
     }

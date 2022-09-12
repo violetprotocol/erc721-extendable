@@ -45,7 +45,7 @@ contract ERC721MetadataEnumerable is ERC721Metadata {
         require(extendGetterSuccess, "failed to initialise enumerable getter");
 
         (bool registerEnumerableInterfaceSuccess, ) = extendLogic.delegatecall(
-            abi.encodeWithSignature("registerInterface(bytes4)", bytes4(0x780e9d63))
+            abi.encodeWithSignature("registerInterface(bytes4)", ERC721EnumerableInterfaceId)
         );
         require(registerEnumerableInterfaceSuccess, "failed to register IERC721Enumerable interface");
     }
