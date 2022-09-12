@@ -3,11 +3,12 @@ import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { firstTokenId, secondTokenId } from "../base/ERC721.behaviour";
 import { MODULE } from "../setup";
+import { ERC721EnumerableInterfaceId } from "../utils/constants";
 
 export function shouldBehaveLikeERC721Enumerable(module: MODULE) {
   it("should successfully register erc721Enumerable interface", async function () {
     await this.redeploy(module, false);
-    expect(await this.tokenAsExtend.callStatic.supportsInterface("0x780e9d63")).to.be.true;
+    expect(await this.tokenAsExtend.callStatic.supportsInterface(ERC721EnumerableInterfaceId)).to.be.true;
   });
 
   context("with minted tokens", function () {
